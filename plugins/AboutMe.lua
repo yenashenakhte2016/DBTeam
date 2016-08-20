@@ -1,21 +1,11 @@
---[[
 
-     **************************
-     *  BlackPlus Plugins...  *
-     *                        *
-     *     By @MehdiHS        *
-     *                        *
-     *  Channel > @Black_Ch   *
-     **************************
-	 
-]]
 do
 
 local function run(msg, matches)
   if matches[1] == 'bot' then
     if is_sudo(msg) then
     send_document(get_receiver(msg), "./data/me/version.webp", ok_cb, false)
-      return "B L A C K +\n---------------------------------------------\n|An Advanced Bot Based On #LUA|\n\n> Bot Number : +19092545429\n---------------------------------------------\n #Developer : [@MehdiHS | @MehdHS_Bot]\n---------------------------------------------\n #Sudoers :\n1 > [#Amirho3inf]\n2 > [#Surena]\n3 > [#Vandad_YflQw]\n4 > [#Alireza_NiGht]\n---------------------------------------------\n> Channel : @Black_CH"
+      return "Security Bot\n---------------------------------------------\n|An Advanced Bot Based On Lua|\n\n> Bot Number : +6288973825734\n---------------------------------------------\n#Developers [ @MutePuker | @MohammadDeveloper ]\n#Report [ @MutePukerBot | @MohammadDeveloperBot ]\n---------------------------------------------\n#Channel : @MuteTeam"
     elseif is_admin1(msg) then
     send_document(get_receiver(msg), "./data/me/admin.webp", ok_cb, false)
       return "You're Admin"
@@ -40,14 +30,3 @@ return {
   run = run
 }
 end
---[[
-
-     **************************
-     *  BlackPlus Plugins...  *
-     *                        *
-     *     By @MehdiHS        *
-     *                        *
-     *  Channel > @Black_Ch   *
-     **************************
-	 
-]]
