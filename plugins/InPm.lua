@@ -220,7 +220,7 @@ if to == 'user' or service or is_admin1(msg) and to == "chat" or to == "channel"
 
 	if matches[1] == 'help' and msg.to.type == 'user' or matches[1] == 'pmhelp' and is_admin1(msg) and msg.to.type ~= 'user' then
       	savelog(msg.to.id, name_log.." ["..msg.from.id.."] used pm help")
-		text = "Welcome to BlackPlus!\n\n>To get a new BlackPlus group, Use /support command to get a support Link! Or Contact a Support Team With @BlackSupport_Bot\n\nFor more information, check out our channel:\n[@Black_CH] \n\nUse #superhelp command to show bot commands!!\n\n#Thanks_for_using @BIackPlus!"
+		text = "سلام به ربات محافظ گروه ها خوش آمدید\nلطفا به کانال مراجعه کنید\n@MuteTeam\n\nبرای خرید گروه به یکی از آیدی های زیر مراجعه کنید\n@MutePuker\n@MohammadDeveloper\n\nاگر ریپورت هستید با آیدی زیر به راحتی با ما در ارتباط باشید\n @MohammadDeveloperBot\n\n🔥Security Bot🔥"
      	return text
     end
 
