@@ -14,8 +14,8 @@ local data = load_data(_config.moderation.data)
     if msgs > TIME_CHECK_msg then
 	  local chat = msg.to.id
  if data[tostring(msg.to.id)] then
-      if data[tostring(msg.to.id)]['settings']['TIME_CHECK'] then
-        TIME_CHECK = tonumber(data[tostring(msg.to.id)]['settings']['TIME_CHECK'])--Obtain Time Check Flood
+      if data[tostring(msg.to.id)]['settings']['flood_time'] then
+        TIME_CHECK = tonumber(data[tostring(msg.to.id)]['settings']['flood_time'])--Obtain Time Check Flood
   if msg.service then
     return msg
   end

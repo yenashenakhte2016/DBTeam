@@ -715,8 +715,8 @@ function show_supergroup_settingsmod(msg, target)
     end
     local data = load_data(_config.moderation.data)
     if data[tostring(target)] then
-     	if data[tostring(target)]['settings']['TIME_CHECK'] then
-        	TIME_CHECK = tonumber(data[tostring(target)]['settings']['TIME_CHCK'])
+     	if data[tostring(target)]['settings']['flood_time'] then
+        	TIME_CHECK = tonumber(data[tostring(target)]['settings']['flood_time'])
         	print('custom'..TIME_CHECK)
       	else
         	TIME_CHECK = 2
@@ -2105,7 +2105,7 @@ local function run(msg, matches)
 				return "Wrong number TIME FLOOD,range is [5-20]"
 			end
 			local flood_time = matches[2]
-			data[tostring(msg.to.id)]['settings']['TIME_CHECK'] = TIME_CHECK
+			data[tostring(msg.to.id)]['settings']['flood_time'] = TIME_CHECK
 			save_data(_config.moderation.data, data)
 			savelog(msg.to.id, name_log.." ["..msg.from.id.."] set floodTime to ["..matches[2].."]")
 			return 'FloodTime Group has been set to: '..matches[2]
