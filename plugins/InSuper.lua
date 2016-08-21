@@ -704,7 +704,6 @@ function show_supergroup_settingsmod(msg, target)
  	if not is_momod(msg) then
     	return
   	end
-  end
 	local data = load_data(_config.moderation.data)
     if data[tostring(target)] then
      	if data[tostring(target)]['settings']['flood_msg_max'] then
@@ -713,7 +712,7 @@ function show_supergroup_settingsmod(msg, target)
       	else
         	NUM_MSG_MAX = 5
       	end
-     end
+    end
 	if data[tostring(target)]['settings'] then
 		if not data[tostring(target)]['settings']['public'] then
 			data[tostring(target)]['settings']['public'] = 'no'

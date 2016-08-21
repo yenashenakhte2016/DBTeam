@@ -90,25 +90,6 @@ local function pre_process(msg)
 	  local chat = msg.to.id
 	  local whitelist = "whitelist"
 	  local is_whitelisted = redis:sismember(whitelist, user)
-      
-       -check floodtime
-        if msg.from.type == 'user' then
-    local hash = 'user:'..msg.from.id..':msgs'
-    local msgs = tonumber(redis:get(hash) or 0)
-    local data = load_data(_config.moderation.data)
-    local CHECK_TIME = 5
-    if data[tostring(msg.to.id)] then
-      if data[tostring(msg.to.id)]['settings']['flood_time'] then
-        CHECK_TIME = tonumber(data[tostring(msg.to.id)]['settings']['flood_time'])--Obtain group flood sensitivity
-      end
-    end
-    local time_msg = CHECK_TIME * 1
-    if msgs > time_msg then
-	  local user = msg.from.id
-	  local chat = msg.to.id
-	  local whitelist = "whitelist"
-	  local is_whitelisted = redis:sismember(whitelist, user)
-    
       -- Ignore mods,owner and admins
       if is_momod(msg) then 
         return msg
