@@ -1335,7 +1335,7 @@ end
 --Run function
 local function run(msg, matches)
 	if msg.to.type == 'chat' then
-		if matches[1] == 'upchat' then
+		if matches[1]:lower() == 'upchat' then
 			if not is_admin1(msg) then
 				return
 			end
@@ -1343,7 +1343,7 @@ local function run(msg, matches)
 			chat_upgrade(receiver, ok_cb, false)
 		end
 	elseif msg.to.type == 'channel'then
-		if matches[1] == 'upchat' then
+		if matches[1]:lower () == 'upchat' then
 			if not is_admin1(msg) then
 				return
 			end
@@ -1356,7 +1356,7 @@ local function run(msg, matches)
 	local print_name = user_print_name(msg.from):gsub("‮", "")
 	local name_log = print_name:gsub("_", " ")
 	local data = load_data(_config.moderation.data)
-		if matches[1] == 'add' and not matches[2] then
+		if matches[1]:lower() == 'add' and not matches[2] then
 			if not is_admin1(msg) and not is_support(support_id) then
 				return
 			end
@@ -1370,7 +1370,7 @@ local function run(msg, matches)
 			channel_set_admin(receiver, 'user#id'..msg.from.id, ok_cb, false)
 		end
 
-		if matches[1] == 'rem' and is_admin1(msg) and not matches[2] then
+		if matches[1]:lowet() == 'rem' and is_admin1(msg) and not matches[2] then
 			if not is_super_group(msg) then
 				return reply_msg(msg.id, 'SuperGroup is not added.', ok_cb, false)
 			end
@@ -1382,7 +1382,7 @@ local function run(msg, matches)
 		if not data[tostring(msg.to.id)] then
 			return
 		end
-		if matches[1] == "info" then
+		if matches[1]:lower() == "info" then
 			if not is_owner(msg) then
 				return
 			end
@@ -1390,7 +1390,7 @@ local function run(msg, matches)
 			channel_info(receiver, callback_info, {receiver = receiver, msg = msg})
 		end
 
-		if matches[1] == "admins" then
+		if matches[1]:lower() == "admins" then
 			if not is_owner(msg) and not is_support(msg.from.id) then
 				return
 			end
@@ -1399,7 +1399,7 @@ local function run(msg, matches)
 			admins = channel_get_admins(receiver,callback, {receiver = receiver, msg = msg, member_type = member_type})
 		end
 
-		if matches[1] == "owner" then
+		if matches[1]:lower() == "owner" then
 			local group_owner = data[tostring(msg.to.id)]['set_owner']
 			if not group_owner then
 				return "*no owner,ask admins in support groups to set owner for your SuperGroup"
@@ -1408,30 +1408,30 @@ local function run(msg, matches)
 			return "SuperGroup owner is > ["..group_owner..']'
 		end
 
-		if matches[1] == "modlist" then
+		if matches[1]:lower() == "modlist" then
 			savelog(msg.to.id, name_log.." ["..msg.from.id.."] requested group modlist")
 			return modlist(msg)
 			-- channel_get_admins(receiver,callback, {receiver = receiver})
 		end
 
-		if matches[1] == "bots" and is_momod(msg) then
+		if matches[1]:lower() == "bots" and is_momod(msg) then
 			member_type = 'Bots'
 			savelog(msg.to.id, name_log.." ["..msg.from.id.."] requested SuperGroup bots list")
 			channel_get_bots(receiver, callback, {receiver = receiver, msg = msg, member_type = member_type})
 		end
 
-		if matches[1] == "who" and not matches[2] and is_momod(msg) then
+		if matches[1]:lower() == "who" and not matches[2] and is_momod(msg) then
 			local user_id = msg.from.peer_id
 			savelog(msg.to.id, name_log.." ["..msg.from.id.."] requested SuperGroup users list")
 			channel_get_users(receiver, callback_who, {receiver = receiver})
 		end
 
-		if matches[1] == "kicked" and is_momod(msg) then
+		if matches[1]:lower() == "kicked" and is_momod(msg) then
 			savelog(msg.to.id, name_log.." ["..msg.from.id.."] requested Kicked users list")
 			channel_get_kicked(receiver, callback_kicked, {receiver = receiver})
 		end
 
-		if matches[1] == 'del' and is_momod(msg) then
+		if matches[1]:lower() == 'del' and is_momod(msg) then
 			if type(msg.reply_id) ~= "nil" then
 				local cbreply_extra = {
 					get_cmd = 'del',
@@ -1442,14 +1442,14 @@ local function run(msg, matches)
 			end
 		end
 
-		if matches[1] == 'kick' and is_momod(msg) then
+		if matches[1]:lower() == 'kick' and is_momod(msg) then
 			if type(msg.reply_id) ~= "nil" then
 				local cbreply_extra = {
 					get_cmd = 'channel_block',
 					msg = msg
 				}
 				get_message(msg.reply_id, get_message_callback, cbreply_extra)
-			elseif matches[1] == 'kick' and string.match(matches[2], '^%d+$') then
+			elseif matches[1]:lower() == 'kick' and string.match(matches[2], '^%d+$') then
 				local user_id = matches[2]
 				local channel_id = msg.to.id
 				if is_momod2(user_id, channel_id) and not is_admin2(user_id) then
@@ -1479,7 +1479,7 @@ local function run(msg, matches)
 			end
 		end
 
-		if matches[1] == 'id' then
+		if matches[1]:lower() == 'id' then
 			if type(msg.reply_id) ~= "nil" and is_momod(msg) and not matches[2] then
 				local cbreply_extra = {
 					get_cmd = 'id',
@@ -1506,14 +1506,14 @@ local function run(msg, matches)
 				return reply_msg(msg.id, "> SuperGroup ID: "..msg.to.id.."\n> SuperGroup Name: "..msg.to.title.."\n> First Name: "..(msg.from.first_name or '').."\n> Last Name: "..(msg.from.last_name or '').."\n> Your ID: "..msg.from.id.."\n> Username: @"..(msg.from.username or '').."\n> Phone Number: +"..(msg.from.phone or '404 Not Found!').."\n> Your Link: Telegram.Me/"..(msg.from.username or '').."\n> Group Type: #SuperGroup", ok_cb, false)		end
 		end
 
-		if matches[1] == 'kickme' then
+		if matches[1]:lower() == 'kickme' then
 			if msg.to.type == 'channel' then
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] left via kickme")
 				channel_kick("channel#id"..msg.to.id, "user#id"..msg.from.id, ok_cb, false)
 			end
 		end
 
-		if matches[1] == 'newlink' and is_momod(msg)then
+		if matches[1]:lower() == 'newlink' and is_momod(msg)then
 			local function callback_link (extra , success, result)
 			local receiver = get_receiver(msg)
 				if success == 0 then
@@ -1530,7 +1530,7 @@ local function run(msg, matches)
 			export_channel_link(receiver, callback_link, false)
 		end
 
-		if matches[1] == 'setlink' and is_owner(msg) then
+		if matches[1]:lower() == 'setlink' and is_owner(msg) then
 			data[tostring(msg.to.id)]['settings']['set_link'] = 'waiting'
 			save_data(_config.moderation.data, data)
 			return 'Please send the new group link now!'
@@ -1544,7 +1544,7 @@ local function run(msg, matches)
 			end
 		end
 
-		if matches[1] == 'link' then
+		if matches[1]:lower() == 'link' then
 			if not is_momod(msg) then
 				return
 			end
@@ -1556,7 +1556,7 @@ local function run(msg, matches)
 			return "SuperGroup link:\n> "..group_link
 		end
 
-		if matches[1] == "invite" and is_sudo(msg) then
+		if matches[1]:lower() == "invite" and is_sudo(msg) then
 			local cbres_extra = {
 				channel = get_receiver(msg),
 				get_cmd = "invite"
@@ -1567,7 +1567,7 @@ local function run(msg, matches)
 			resolve_username(username,  callbackres, cbres_extra)
 		end
 
-		if matches[1] == 'res' and is_owner(msg) then
+		if matches[1]:lower() == 'res' and is_owner(msg) then
 			local cbres_extra = {
 				channelid = msg.to.id,
 				get_cmd = 'res'
@@ -1578,13 +1578,13 @@ local function run(msg, matches)
 			resolve_username(username,  callbackres, cbres_extra)
 		end
 
-		if matches[1] == 'kick' and is_momod(msg) then
+		if matches[1]:lower() == 'kick' and is_momod(msg) then
 			local receiver = channel..matches[3]
 			local user = "user#id"..matches[2]
 			chaannel_kick(receiver, user, ok_cb, false)
 		end
 
-			if matches[1] == 'setadmin' then
+			if matches[1]:lower() == 'setadmin' then
 				if not is_support(msg.from.id) and not is_owner(msg) then
 					return
 				end
@@ -1594,7 +1594,7 @@ local function run(msg, matches)
 					msg = msg
 				}
 				setadmin = get_message(msg.reply_id, get_message_callback, cbreply_extra)
-			elseif matches[1] == 'setadmin' and string.match(matches[2], '^%d+$') then
+			elseif matches[1]:lower() == 'setadmin' and string.match(matches[2], '^%d+$') then
 			--[[]	local receiver = get_receiver(msg)
 				local user_id = "user#id"..matches[2]
 				local get_cmd = 'setadmin'
@@ -1603,7 +1603,7 @@ local function run(msg, matches)
 				local	msg = msg
 				local user_id = matches[2]
 				channel_get_users (receiver, in_channel_cb, {get_cmd=get_cmd, receiver=receiver, msg=msg, user_id=user_id})
-			elseif matches[1] == 'setadmin' and not string.match(matches[2], '^%d+$') then
+			elseif matches[1]:lower() == 'setadmin' and not string.match(matches[2], '^%d+$') then
 				--[[local cbres_extra = {
 					channel = get_receiver(msg),
 					get_cmd = 'setadmin'
@@ -1620,7 +1620,7 @@ local function run(msg, matches)
 			end
 		end
 
-		if matches[1] == 'demoteadmin' then
+		if matches[1]:lower() == 'demoteadmin' then
 			if not is_support(msg.from.id) and not is_owner(msg) then
 				return
 			end
@@ -1630,12 +1630,12 @@ local function run(msg, matches)
 					msg = msg
 				}
 				demoteadmin = get_message(msg.reply_id, get_message_callback, cbreply_extra)
-			elseif matches[1] == 'demoteadmin' and string.match(matches[2], '^%d+$') then
+			elseif matches[1]:lower() == 'demoteadmin' and string.match(matches[2], '^%d+$') then
 				local receiver = get_receiver(msg)
 				local user_id = "user#id"..matches[2]
 				local get_cmd = 'demoteadmin'
 				user_info(user_id, cb_user_info, {receiver = receiver, get_cmd = get_cmd})
-			elseif matches[1] == 'demoteadmin' and not string.match(matches[2], '^%d+$') then
+			elseif matches[1]:lower() == 'demoteadmin' and not string.match(matches[2], '^%d+$') then
 				local cbres_extra = {
 					channel = get_receiver(msg),
 					get_cmd = 'demoteadmin'
@@ -1647,14 +1647,14 @@ local function run(msg, matches)
 			end
 		end
 
-		if matches[1] == 'setowner' and is_owner(msg) then
+		if matches[1]:lower() == 'setowner' and is_owner(msg) then
 			if type(msg.reply_id) ~= "nil" then
 				local cbreply_extra = {
 					get_cmd = 'setowner',
 					msg = msg
 				}
 				setowner = get_message(msg.reply_id, get_message_callback, cbreply_extra)
-			elseif matches[1] == 'setowner' and string.match(matches[2], '^%d+$') then
+			elseif matches[1]:lower() == 'setowner' and string.match(matches[2], '^%d+$') then
 			local group_owner = data[tostring(msg.to.id)]['set_owner']
 				if group_owner then
 					local receiver = get_receiver(msg)
@@ -1674,7 +1674,7 @@ local function run(msg, matches)
 				local	msg = msg
 				local user_id = matches[2]
 				channel_get_users (receiver, in_channel_cb, {get_cmd=get_cmd, receiver=receiver, msg=msg, user_id=user_id})
-			elseif matches[1] == 'setowner' and not string.match(matches[2], '^%d+$') then
+			elseif matches[1]:lower() == 'setowner' and not string.match(matches[2], '^%d+$') then
 				local	get_cmd = 'setowner'
 				local	msg = msg
 				local username = matches[2]
@@ -1683,7 +1683,7 @@ local function run(msg, matches)
 			end
 		end
 
-		if matches[1] == 'promote' then
+		if matches[1]:lower() == 'promote' then
 		  if not is_momod(msg) then
 				return
 			end
@@ -1696,13 +1696,13 @@ local function run(msg, matches)
 					msg = msg
 				}
 				promote = get_message(msg.reply_id, get_message_callback, cbreply_extra)
-			elseif matches[1] == 'promote' and string.match(matches[2], '^%d+$') then
+			elseif matches[1]:lower() == 'promote' and string.match(matches[2], '^%d+$') then
 				local receiver = get_receiver(msg)
 				local user_id = "user#id"..matches[2]
 				local get_cmd = 'promote'
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] promoted user#id"..matches[2])
 				user_info(user_id, cb_user_info, {receiver = receiver, get_cmd = get_cmd})
-			elseif matches[1] == 'promote' and not string.match(matches[2], '^%d+$') then
+			elseif matches[1]:lower() == 'promote' and not string.match(matches[2], '^%d+$') then
 				local cbres_extra = {
 					channel = get_receiver(msg),
 					get_cmd = 'promote',
@@ -1714,20 +1714,20 @@ local function run(msg, matches)
 			end
 		end
 
-		if matches[1] == 'mp' and is_sudo(msg) then
+		if matches[1]:lower() == 'mp' and is_sudo(msg) then
 			channel = get_receiver(msg)
 			user_id = 'user#id'..matches[2]
 			channel_set_mod(channel, user_id, ok_cb, false)
 			return "Done"
 		end
-		if matches[1] == 'md' and is_sudo(msg) then
+		if matches[1]:lower() == 'md' and is_sudo(msg) then
 			channel = get_receiver(msg)
 			user_id = 'user#id'..matches[2]
 			channel_demote(channel, user_id, ok_cb, false)
 			return "Done"
 		end
 
-		if matches[1] == 'demote' then
+		if matches[1]:lower() == 'demote' then
 			if not is_momod(msg) then
 				return
 			end
@@ -1740,7 +1740,7 @@ local function run(msg, matches)
 					msg = msg
 				}
 				demote = get_message(msg.reply_id, get_message_callback, cbreply_extra)
-			elseif matches[1] == 'demote' and string.match(matches[2], '^%d+$') then
+			elseif matches[1]:lower() == 'demote' and string.match(matches[2], '^%d+$') then
 				local receiver = get_receiver(msg)
 				local user_id = "user#id"..matches[2]
 				local get_cmd = 'demote'
@@ -1758,7 +1758,7 @@ local function run(msg, matches)
 			end
 		end
 
-		if matches[1] == "setname" and is_momod(msg) then
+		if matches[1]:lower() == "setname" and is_momod(msg) then
 			local receiver = get_receiver(msg)
 			local set_name = string.gsub(matches[2], '_', '')
 			savelog(msg.to.id, name_log.." ["..msg.from.id.."] renamed SuperGroup to: "..matches[2])
@@ -1771,7 +1771,7 @@ local function run(msg, matches)
 			save_data(_config.moderation.data, data)
 		end
 
-		if matches[1] == "setabout" and is_momod(msg) then
+		if matches[1]:lower() == "setabout" and is_momod(msg) then
 			local receiver = get_receiver(msg)
 			local about_text = matches[2]
 			local data_cat = 'description'
@@ -1783,7 +1783,7 @@ local function run(msg, matches)
 			return "Description has been set.\n\nSelect the chat again to see the changes."
 		end
 
-		if matches[1] == "setusername" and is_admin1(msg) then
+		if matches[1]:lower() == "setusername" and is_admin1(msg) then
 			local function ok_username_cb (extra, success, result)
 				local receiver = extra.receiver
 				if success == 1 then
@@ -1796,7 +1796,7 @@ local function run(msg, matches)
 			channel_set_username(receiver, username, ok_username_cb, {receiver=receiver})
 		end
 
-		if matches[1] == 'setrules' and is_momod(msg) then
+		if matches[1]:lower() == 'setrules' and is_momod(msg) then
 			rules = matches[2]
 			local target = msg.to.id
 			savelog(msg.to.id, name_log.." ["..msg.from.id.."] has changed group rules to ["..matches[2].."]")
@@ -1810,14 +1810,14 @@ local function run(msg, matches)
 				return
 			end
 		end
-		if matches[1] == 'setphoto' and is_momod(msg) then
+		if matches[1]:lower() == 'setphoto' and is_momod(msg) then
 			data[tostring(msg.to.id)]['settings']['set_photo'] = 'waiting'
 			save_data(_config.moderation.data, data)
 			savelog(msg.to.id, name_log.." ["..msg.from.id.."] started setting new SuperGroup photo")
 			return '> Please send the new group photo now!'
 		end
 
-		if matches[1] == 'clean' then
+		if matches[1]:lower() == 'clean' then
 			if not is_momod(msg) then
 				return
 			end
@@ -1899,7 +1899,7 @@ local function run(msg, matches)
 			return reply_msg(msg.id,"GbanList Have Been Cleaned!", ok_cb,false)
 		end
 	end
-		if matches[1] == 'lock' and is_momod(msg) then
+		if matches[1]:lower() == 'lock' and is_momod(msg) then
 			local target = msg.to.id
 			if matches[2] == 'links' then
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] locked link posting ")
@@ -1966,7 +1966,7 @@ local function run(msg, matches)
 				return enable_strict_rules(msg, data, target)
 			end
 		end
-        if matches[1] == 'mte' and is_momod(msg) then
+        if matches[1]:lower() == 'mte' and is_momod(msg) then
 		local target = msg.to.id
 				if matches[2] == 'photo' then
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] locked photo posting")
@@ -1989,7 +1989,7 @@ local function run(msg, matches)
 				return lock_group_document(msg, data, target)
 			end
 		end
-		if matches[1] == 'unlock' and is_momod(msg) then
+		if matches[1]:lower() == 'unlock' and is_momod(msg) then
 			local target = msg.to.id
 			if matches[2] == 'links' then
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked link posting")
@@ -2060,7 +2060,7 @@ local function run(msg, matches)
 				return disable_strict_rules(msg, data, target)
 			end
 		end
-		if matches[1] == 'unmte' and is_momod(msg) then
+		if matches[1]:lower() == 'unmte' and is_momod(msg) then
 			local target = msg.to.id
 				if matches[2] == 'photo' then
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked photo posting")
@@ -2083,7 +2083,7 @@ local function run(msg, matches)
 				return unlock_group_document(msg, data, target)
 		    end
 		end
-		if matches[1] == 'setflood' then
+		if matches[1]:lower() == 'setflood' then
 			if not is_momod(msg) then
 				return
 			end
@@ -2097,7 +2097,7 @@ local function run(msg, matches)
 			return 'Flood has been set to: '..matches[2]
 		end 
         
-        if matches[1] == 'setfloodtime' then
+        if matches[1]:lower() == 'setfloodtime' then
 			if not is_momod(msg) then
 				return
 			end
@@ -2112,7 +2112,7 @@ local function run(msg, matches)
 		end
 
 
-		if matches[1] == 'public' and is_momod(msg) then
+		if matches[1]:lower() == 'public' and is_momod(msg) then
 			local target = msg.to.id
 			if matches[2] == 'yes' then
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] set group to: public")
@@ -2124,7 +2124,7 @@ local function run(msg, matches)
 			end
 		end
 
-		if matches[1] == 'mute' and is_momod(msg) then
+		if matches[1]:lower() == 'mute' and is_momod(msg) then
 			local chat_id = msg.to.id
 			if matches[2] == 'audio' then
 			local msg_type = 'Audio'
@@ -2197,7 +2197,7 @@ local function run(msg, matches)
 				end
 			end
 		end
-		if matches[1] == 'unmute' and is_momod(msg) then
+		if matches[1]:lower() == 'unmute' and is_momod(msg) then
 			local chat_id = msg.to.id
 			if matches[2] == 'audio' then
 			local msg_type = 'Audio'
@@ -2272,7 +2272,7 @@ local function run(msg, matches)
 		end
 
 
-		if matches[1] == "muteuser" and is_momod(msg) then
+		if matches[1]:lower() == "muteuser" and is_momod(msg) then
 			local chat_id = msg.to.id
 			local hash = "mute_user"..chat_id
 			local user_id = ""
@@ -2280,7 +2280,7 @@ local function run(msg, matches)
 				local receiver = get_receiver(msg)
 				local get_cmd = "mute_user"
 				muteuser = get_message(msg.reply_id, get_message_callback, {receiver = receiver, get_cmd = get_cmd, msg = msg})
-			elseif matches[1] == "muteuser" and string.match(matches[2], '^%d+$') then
+			elseif matches[1]:lower() == "muteuser" and string.match(matches[2], '^%d+$') then
 				local user_id = matches[2]
 				if is_muted_user(chat_id, user_id) then
 					unmute_user(chat_id, user_id)
@@ -2291,7 +2291,7 @@ local function run(msg, matches)
 					savelog(msg.to.id, name_log.." ["..msg.from.id.."] added ["..user_id.."] to the muted users list")
 					return reply_msg(msg.id,"> ["..user_id.."] added to the muted user list",ok_cb,false)
 				end
-			elseif matches[1] == "muteuser" and not string.match(matches[2], '^%d+$') then
+			elseif matches[1]:lower() == "muteuser" and not string.match(matches[2], '^%d+$') then
 				local receiver = get_receiver(msg)
 				local get_cmd = "mute_user"
 				local username = matches[2]
@@ -2300,7 +2300,7 @@ local function run(msg, matches)
 			end
 		end
 
-		if matches[1] == "muteslist" and is_momod(msg) then
+		if matches[1]:lower() == "muteslist" and is_momod(msg) then
 			local chat_id = msg.to.id
 			if not has_mutes(chat_id) then
 				set_mutes(chat_id)
@@ -2309,47 +2309,47 @@ local function run(msg, matches)
 			savelog(msg.to.id, name_log.." ["..msg.from.id.."] requested SuperGroup muteslist")
 			return mutes_list(chat_id)
 		end
-		if matches[1] == "mutelist" and is_momod(msg) then
+		if matches[1]:lower() == "mutelist" and is_momod(msg) then
 			local chat_id = msg.to.id
 			savelog(msg.to.id, name_log.." ["..msg.from.id.."] requested SuperGroup mutelist")
 			return muted_user_list(chat_id)
 		end
 
-		if matches[1] == 'settings' and is_momod(msg) then
+		if matches[1]:lower() == 'settings' and is_momod(msg) then
 			local target = msg.to.id
 			savelog(msg.to.id, name_log.." ["..msg.from.id.."] requested SuperGroup settings ")
 			return show_supergroup_settingsmod(msg, target)
 		end
 
-		if matches[1] == 'rules' then
+		if matches[1]:lower() == 'rules' then
 			savelog(msg.to.id, name_log.." ["..msg.from.id.."] requested group rules")
 			return get_rules(msg, data)
 		end
 
-		if matches[1] == 'help' and not is_momod(msg) then
+		if matches[1]:lower() == 'help' and not is_momod(msg) then
 			text = "لیست دستورات برای اعضای معمولی:\n\n➖➖➖➖➖➖\n#topstats\nنشان دادن ۳ نفر از فعال ترین اعضای گروه!\n➖➖➖➖➖➖\n#filterlist\nنشان دادن کلمه های فیلتر شده.\n➖➖➖➖➖➖\n#id\nنمایش اطلاعات اکانت شما .\n➖➖➖➖➖➖\n#sticker [reply]\nبا ریپلای کردن عکس میتوانید آن را به استیکر تبدیل کنید!\n#sticker [text]\nتبدیل متن شما به استیکر ...\n#sticker [text] [color]\nتبدیل متن شما به استیکر با تنظیم رنگ ...\n#sticker [text] [color] [font]\n\nتبدیل متن شما به استیکر با تنظیم رنگ و فونت...\n( Supported fonts : [fun|italic|bold|arial] )\n( Supported colors : [black|red|blue|yellow|pink|orange|brown] )\nتبدیل متن شما به استیکر ...\n➖➖➖➖➖➖\n#photo [reply]\nبا ریپلای کردن استیکر میتوانید آن را به عکس تبدیل کنید!\n➖➖➖➖➖➖\n#vc [kalame](زبان ها : Farsi,En)\nتبدیل کلمه به صدا\n➖➖➖➖➖➖\n#weather [اسم شهر]\nدریافت اطلاعات آب و هوای یک منطقه\n➖➖➖➖➖➖\n#aparat [کلمه] \nجستوجو در آپارات!\n➖➖➖➖➖➖\n#me\nنمایش تعداد پیام های ارسال شده از شما\n➖➖➖➖➖➖\n#qr [کلمه]\nتبدیل کلمه،لینک،... شما به بارکد\n➖➖➖➖➖➖\n#insta [id, Post Link]\nدریافت اطلاعات ایدی و ... از اینستاگرام!\n➖➖➖➖➖➖\n#calc [2*2]\nمحاسبه جمع تفریق ضرب و...\n➖➖➖➖➖➖\n#porn [text]\nجستجو در 7 سایت +18\n➖➖➖➖➖➖\n#time\nدریافت زمان دقیق!\n➖➖➖➖➖➖\n#support \nدریافت لینک گروه پشتیبانی!\n➖➖➖➖➖➖\n#version\nنمایش ورژن و ادمین های ربات!\n➖➖➖➖➖➖\n#plist\nدریافت لیست قیمت برای خرید گروه...\n➖➖➖➖➖➖\n#write [text]\nطراحی کلمه مورد تظر با 17 فونت!\n➖➖➖➖➖➖\n#feedback [text]\nشما میتوانید با این دستور نظرات و پیشنهادات خود را برای ما ارسال کنید...\n➖➖➖➖➖➖\n| Channel : @Black_CH |\n"
 			reply_msg(msg.id, text, ok_cb, false)
-		elseif matches[1] == 'help' and is_momod(msg) then
+		elseif matches[1]:lower() == 'help' and is_momod(msg) then
 			text = "راهنمای بات ضد اسپم بلک\nدرصورت ابهام میتونید با دستور /support لینک گروه پشتیبانی را دریافت کنید و  مشکلتون رو مطرح کنید! \n\n➖➖➖➖➖➖\n#ban @username\nاخراج کردن یک فرد از گروه به صورت دائمی\n#unban @username\nخارج کردن یک فرد از حالت اخراج دائمی!\n#banlist\nلیست افراد بن شده.\n➖➖➖➖➖➖\n#info\nنمایش اطلاعات اصلی گروه\n➖➖➖➖➖➖\n#del [reply|number]\nپاک کردن تعداد پیام های مورد نظر با ریپلی و تعداد!\n➖➖➖➖➖➖\n#topstats\nنشان دادن ۳ نفر از فعال ترین اعضای گروه!\n➖➖➖➖➖➖\n#admins\nنمایش لیست ادمین های گروه\n➖➖➖➖➖➖\n#filter [word]\nفیلتر کردن یک کلمه\n#remword [word]\nحذف کردن کلمه از لیست فیلتر کلمات\n#filterlist\nنشان دادن کلمه های فیلتر شده.\n➖➖➖➖➖➖\n#owner\nنمایش آیدی خریدار گروه.\n➖➖➖➖➖➖\n#modlist\nنمایش لیست ناظم ها.\n➖➖➖➖➖➖\n#bots\nلیست روبات های گروه.\n➖➖➖➖➖➖\n#who\nلیست اعضای گروه در یک فایل متنی.\n(.txt)\n➖➖➖➖➖➖\n#kick [reply|id]\nبلاک کردن و کیک کردن فرد از گروه.\n➖➖➖➖➖➖\n#setwlc [your text]\nتنظیم یک متن به عنوان متن خوشامد گویی\n➖➖➖➖➖➖\n#setwlc rules [your text]\nتنظیم کردن یک متن به عنوان پلام خوشامد گویی + قوانین گروه.\n➖➖➖➖➖➖\n#delwlc\nحذف پیام خوشامد گویی.\n➖➖➖➖➖➖\n#id\nنمایش اطلاعات اکانت شما .\n➖➖➖➖➖➖\n#sticker [reply]\nبا ریپلای کردن عکس میتوانید آن را به استیکر تبدیل کنید!\n#sticker [text]\nتبدیل متن شما به استیکر ...\n#sticker [text] [color]\nتبدیل متن شما به استیکر با تنظیم رنگ ...\n#sticker [text] [color] [font]\n\nتبدیل متن شما به استیکر با تنظیم رنگ و فونت...\n( Supported fonts : [fun|italic|bold|arial] )\n( Supported colors : [black|red|blue|yellow|pink|orange|brown] )\nتبدیل متن شما به استیکر ...\n➖➖➖➖➖➖\n#photo [reply]\nبا ریپلای کردن استیکر میتوانید آن را به عکس تبدیل کنید!\n➖➖➖➖➖➖\n#vc [kalame](زبان ها : Farsi,En)\nتبدیل کلمه به صدا\n➖➖➖➖➖➖\n#weather [اسم شهر]\nدریافت اطلاعات آب و هوای یک منطقه\n➖➖➖➖➖➖\n#aparat [کلمه] \nجستوجو در آپارات!\n➖➖➖➖➖➖\n#me\nنمایش تعداد پیام های ارسال شده از شما\n➖➖➖➖➖➖\n#qr [کلمه]\nتبدیل کلمه،لینک،... شما به بارکد\n➖➖➖➖➖➖\n#insta [id, Post Link]\nدریافت اطلاعات ایدی و ... از اینستاگرام!\n➖➖➖➖➖➖\n#write [text]\nطراحی کلمه مورد تظر با 17 فونت!\n➖➖➖➖➖➖\n#calc [2*2]\nمحاسبه جمع تفریق ضرب و...\n➖➖➖➖➖➖\n#porn [text]\nجستجو در 7 سایت +\n➖➖➖➖➖➖\n#time\nدریافت زمان دقیق!\n➖➖➖➖➖➖\n#support \nدریافت لینک گروه پشتیبانی!\n➖➖➖➖➖➖\n#setowner [reply, username]\nست کردن کاربر به عنوان خریدار گروه\n#promote [username|id]\nارتقاء مقام کاربر به ناظم گروه\n#demote [username|id]\nخلع مقام کردن کاربر از سمت ناظم ها\n➖➖➖➖➖➖\n#setname [text]\nتغییر اسم گروه\n#setphoto\nجایگزین کردن عکس گروه\n#setrules [text]\nگذاشتن قوانین برای گروه\n#setabout [text]\nگذاشتن متن توضیحات برای سوپر گروه(این متن در بخش توضیحات گروه هم نمایش داده میشه)\n➖➖➖➖➖➖\n#newlink\nساختن لینک جدید\n#link\nگرفتن لینک\n#linkpv\nارسال لینک گروه در پیوی شما!\n➖➖➖➖➖➖\n#rules\nنمایش قوانین\n➖➖➖➖➖➖\n#lock [links|flood|spam|Arabic|member|rtl|sticker|TgService|contacts|forward|badword|emoji|english|tag|webpage|strict]\nقفل کردن لینک گروها-اسپم-متن و اسم های بزرگ -زبان فارسی-تعداد اعضا-کاراکتر های غیر عادی-استیکر-مخاطبین-فروارد-فوش-اموجی-انگلیسی-تگ-لینک سایت\n\nدقت کنید اگر گذینه اخری strict روشن باشد کاربر از گروه کیک میشود و پیغام پاک میشه در غیر این صورت فقط پیغام پاک میشود\n➖➖➖➖➖➖\n#unlock [links|flood|spam|Arabic|member|rtl|sticker|contacts|TgService|strict|forward|badword|emoji|english]\nباز کردن قفل امکانات بالا\n➖➖➖➖➖➖\n#mute [all|audio|gifs|photo|video|text]\nپاک کردن سریع همه پیغام ها-عکس ها-گیف ها-صدا های ضبط شده-فیلم-متن\n➖➖➖➖➖➖\n#unmute [all|audio|gifs|photo|video|text]\nباز کردن قفل امکانات بالا\n➖➖➖➖➖➖\n#setflood [value]\nگذاشتن value به عنوان حساسیت اسپم\n➖➖➖➖➖➖\n#settings\nنمایش تنظیمات گروه\n➖➖➖➖➖➖\n#muteslist\nنمایش نوع پیغام های سایلنت شده\n*A \"muted\" message type is auto-deleted if posted\n➖➖➖➖➖➖\n#muteuser [username]\nسایلنت کردن یک کاربر خاص در گروه\nفقط خریدار (owner) میتونه کسیو سایلنت کنه ولی ناظم ها (Mods) میتونند فرد را از سایلنتی در بیاورند\n➖➖➖➖➖➖\n#mutelist\nنمایش لیست افراد سایلنت شده\n➖➖➖➖➖➖\n#clean [rules|about|modlist|mutelist|bots]\nپاک کردن لیست ناظم ها-درباره-لیست سایلنت شده ها-قوانین-بات ها\n➖➖➖➖➖➖\n#log\nبرگرداندن تاریخچه گروه در یک فایل متنی\n➖➖➖➖➖➖\n#version\nنمایش ورژن و ادمین های ربات!\n➖➖➖➖➖➖\n#plist\nدریافت لیست قیمت برای خرید گروه...\n➖➖➖➖➖➖\n#feedback [text]\nشما میتوانید با این دستور نظرات و پیشنهادات خود را برای ما ارسال کنید...\n➖➖➖➖➖➖\n| Channel : @Black_CH |\n"
 			reply_msg(msg.id, text, ok_cb, false)
 		end
 		
-	if matches[1] == 'superhelp' and is_momod(msg) then
+	if matches[1]:lower() == 'superhelp' and is_momod(msg) then
 			text = "راهنمای بات ضد اسپم بلک\nدرصورت ابهام میتونید با دستور /support لینک گروه پشتیبانی را دریافت کنید و  مشکلتون رو مطرح کنید! \n\n➖➖➖➖➖➖\n#ban @username\nاخراج کردن یک فرد از گروه به صورت دائمی\n#unban @username\nخارج کردن یک فرد از حالت اخراج دائمی!\n#banlist\nلیست افراد بن شده.\n➖➖➖➖➖➖\n#info\nنمایش اطلاعات اصلی گروه\n➖➖➖➖➖➖\n#del [reply|number]\nپاک کردن تعداد پیام های مورد نظر با ریپلی و تعداد!\n➖➖➖➖➖➖\n#topstats\nنشان دادن ۳ نفر از فعال ترین اعضای گروه!\n➖➖➖➖➖➖\n#admins\nنمایش لیست ادمین های گروه\n➖➖➖➖➖➖\n#filter [word]\nفیلتر کردن یک کلمه\n#remword [word]\nحذف کردن کلمه از لیست فیلتر کلمات\n#filterlist\nنشان دادن کلمه های فیلتر شده.\n➖➖➖➖➖➖\n#owner\nنمایش آیدی خریدار گروه.\n➖➖➖➖➖➖\n#modlist\nنمایش لیست ناظم ها.\n➖➖➖➖➖➖\n#bots\nلیست روبات های گروه.\n➖➖➖➖➖➖\n#who\nلیست اعضای گروه در یک فایل متنی.\n(.txt)\n➖➖➖➖➖➖\n#kick [reply|id]\nبلاک کردن و کیک کردن فرد از گروه.\n➖➖➖➖➖➖\n#setwlc [your text]\nتنظیم یک متن به عنوان متن خوشامد گویی\n➖➖➖➖➖➖\n#setwlc rules [your text]\nتنظیم کردن یک متن به عنوان پلام خوشامد گویی + قوانین گروه.\n➖➖➖➖➖➖\n#delwlc\nحذف پیام خوشامد گویی.\n➖➖➖➖➖➖\n#id\nنمایش اطلاعات اکانت شما .\n➖➖➖➖➖➖\n#sticker [reply]\nبا ریپلای کردن عکس میتوانید آن را به استیکر تبدیل کنید!\n#sticker [text]\nتبدیل متن شما به استیکر ...\n#sticker [text] [color]\nتبدیل متن شما به استیکر با تنظیم رنگ ...\n#sticker [text] [color] [font]\n\nتبدیل متن شما به استیکر با تنظیم رنگ و فونت...\n( Supported fonts : [fun|italic|bold|arial] )\n( Supported colors : [black|red|blue|yellow|pink|orange|brown] )\nتبدیل متن شما به استیکر ...\n➖➖➖➖➖➖\n#photo [reply]\nبا ریپلای کردن استیکر میتوانید آن را به عکس تبدیل کنید!\n➖➖➖➖➖➖\n#vc [kalame](زبان ها : Farsi,En)\nتبدیل کلمه به صدا\n➖➖➖➖➖➖\n#weather [اسم شهر]\nدریافت اطلاعات آب و هوای یک منطقه\n➖➖➖➖➖➖\n#aparat [کلمه] \nجستوجو در آپارات!\n➖➖➖➖➖➖\n#me\nنمایش تعداد پیام های ارسال شده از شما\n➖➖➖➖➖➖\n#qr [کلمه]\nتبدیل کلمه،لینک،... شما به بارکد\n➖➖➖➖➖➖\n#insta [id, Post Link]\nدریافت اطلاعات ایدی و ... از اینستاگرام!\n➖➖➖➖➖➖\n#write [text]\nطراحی کلمه مورد تظر با 17 فونت!\n➖➖➖➖➖➖\n#calc [2*2]\nمحاسبه جمع تفریق ضرب و...\n➖➖➖➖➖➖\n#porn [text]\nجستجو در 7 سایت +\n➖➖➖➖➖➖\n#time\nدریافت زمان دقیق!\n➖➖➖➖➖➖\n#support \nدریافت لینک گروه پشتیبانی!\n➖➖➖➖➖➖\n#setowner [reply, username]\nست کردن کاربر به عنوان خریدار گروه\n#promote [username|id]\nارتقاء مقام کاربر به ناظم گروه\n#demote [username|id]\nخلع مقام کردن کاربر از سمت ناظم ها\n➖➖➖➖➖➖\n#setname [text]\nتغییر اسم گروه\n#setphoto\nجایگزین کردن عکس گروه\n#setrules [text]\nگذاشتن قوانین برای گروه\n#setabout [text]\nگذاشتن متن توضیحات برای سوپر گروه(این متن در بخش توضیحات گروه هم نمایش داده میشه)\n➖➖➖➖➖➖\n#newlink\nساختن لینک جدید\n#link\nگرفتن لینک\n#linkpv\nارسال لینک گروه در پیوی شما!\n➖➖➖➖➖➖\n#rules\nنمایش قوانین\n➖➖➖➖➖➖\n#lock [links|flood|spam|Arabic|member|rtl|sticker|TgService|contacts|forward|badword|emoji|english|tag|webpage|strict]\nقفل کردن لینک گروها-اسپم-متن و اسم های بزرگ -زبان فارسی-تعداد اعضا-کاراکتر های غیر عادی-استیکر-مخاطبین-فروارد-فوش-اموجی-انگلیسی-تگ-لینک سایت\n\nدقت کنید اگر گذینه اخری strict روشن باشد کاربر از گروه کیک میشود و پیغام پاک میشه در غیر این صورت فقط پیغام پاک میشود\n➖➖➖➖➖➖\n#unlock [links|flood|spam|Arabic|member|rtl|sticker|contacts|TgService|strict|forward|badword|emoji|english]\nباز کردن قفل امکانات بالا\n➖➖➖➖➖➖\n#mute [all|audio|gifs|photo|video|text]\nپاک کردن سریع همه پیغام ها-عکس ها-گیف ها-صدا های ضبط شده-فیلم-متن\n➖➖➖➖➖➖\n#unmute [all|audio|gifs|photo|video|text]\nباز کردن قفل امکانات بالا\n➖➖➖➖➖➖\n#setflood [value]\nگذاشتن value به عنوان حساسیت اسپم\n➖➖➖➖➖➖\n#settings\nنمایش تنظیمات گروه\n➖➖➖➖➖➖\n#muteslist\nنمایش نوع پیغام های سایلنت شده\n*A \"muted\" message type is auto-deleted if posted\n➖➖➖➖➖➖\n#muteuser [username]\nسایلنت کردن یک کاربر خاص در گروه\nفقط خریدار (owner) میتونه کسیو سایلنت کنه ولی ناظم ها (Mods) میتونند فرد را از سایلنتی در بیاورند\n➖➖➖➖➖➖\n#mutelist\nنمایش لیست افراد سایلنت شده\n➖➖➖➖➖➖\n#clean [rules|about|modlist|mutelist|bots]\nپاک کردن لیست ناظم ها-درباره-لیست سایلنت شده ها-قوانین-بات ها\n➖➖➖➖➖➖\n#log\nبرگرداندن تاریخچه گروه در یک فایل متنی\n➖➖➖➖➖➖\n#version\nنمایش ورژن و ادمین های ربات!\n➖➖➖➖➖➖\n#plist\nدریافت لیست قیمت برای خرید گروه...\n➖➖➖➖➖➖\n#feedback [text]\nشما میتوانید با این دستور نظرات و پیشنهادات خود را برای ما ارسال کنید...\n➖➖➖➖➖➖\n| Channel : @Black_CH |\n"
 			reply_msg(msg.id, text, ok_cb, false)
 	end
-	if matches[1] == 'superhelp' and msg.to.type == "user" then
+	if matches[1]:lower() == 'superhelp' and msg.to.type == "user" then
 			text = "راهنمای بات ضد اسپم بلک\nدرصورت ابهام میتونید با دستور /support لینک گروه پشتیبانی را دریافت کنید و  مشکلتون رو مطرح کنید! \n\n➖➖➖➖➖➖\n#ban @username\nاخراج کردن یک فرد از گروه به صورت دائمی\n#unban @username\nخارج کردن یک فرد از حالت اخراج دائمی!\n#banlist\nلیست افراد بن شده.\n➖➖➖➖➖➖\n#info\nنمایش اطلاعات اصلی گروه\n➖➖➖➖➖➖\n#del [reply|number]\nپاک کردن تعداد پیام های مورد نظر با ریپلی و تعداد!\n➖➖➖➖➖➖\n#topstats\nنشان دادن ۳ نفر از فعال ترین اعضای گروه!\n➖➖➖➖➖➖\n#admins\nنمایش لیست ادمین های گروه\n➖➖➖➖➖➖\n#filter [word]\nفیلتر کردن یک کلمه\n#remword [word]\nحذف کردن کلمه از لیست فیلتر کلمات\n#filterlist\nنشان دادن کلمه های فیلتر شده.\n➖➖➖➖➖➖\n#owner\nنمایش آیدی خریدار گروه.\n➖➖➖➖➖➖\n#modlist\nنمایش لیست ناظم ها.\n➖➖➖➖➖➖\n#bots\nلیست روبات های گروه.\n➖➖➖➖➖➖\n#who\nلیست اعضای گروه در یک فایل متنی.\n(.txt)\n➖➖➖➖➖➖\n#kick [reply|id]\nبلاک کردن و کیک کردن فرد از گروه.\n➖➖➖➖➖➖\n#setwlc [your text]\nتنظیم یک متن به عنوان متن خوشامد گویی\n➖➖➖➖➖➖\n#setwlc rules [your text]\nتنظیم کردن یک متن به عنوان پلام خوشامد گویی + قوانین گروه.\n➖➖➖➖➖➖\n#delwlc\nحذف پیام خوشامد گویی.\n➖➖➖➖➖➖\n#id\nنمایش اطلاعات اکانت شما .\n➖➖➖➖➖➖\n#sticker [reply]\nبا ریپلای کردن عکس میتوانید آن را به استیکر تبدیل کنید!\n#sticker [text]\nتبدیل متن شما به استیکر ...\n#sticker [text] [color]\nتبدیل متن شما به استیکر با تنظیم رنگ ...\n#sticker [text] [color] [font]\n\nتبدیل متن شما به استیکر با تنظیم رنگ و فونت...\n( Supported fonts : [fun|italic|bold|arial] )\n( Supported colors : [black|red|blue|yellow|pink|orange|brown] )\nتبدیل متن شما به استیکر ...\n➖➖➖➖➖➖\n#photo [reply]\nبا ریپلای کردن استیکر میتوانید آن را به عکس تبدیل کنید!\n➖➖➖➖➖➖\n#vc [kalame](زبان ها : Farsi,En)\nتبدیل کلمه به صدا\n➖➖➖➖➖➖\n#weather [اسم شهر]\nدریافت اطلاعات آب و هوای یک منطقه\n➖➖➖➖➖➖\n#aparat [کلمه] \nجستوجو در آپارات!\n➖➖➖➖➖➖\n#me\nنمایش تعداد پیام های ارسال شده از شما\n➖➖➖➖➖➖\n#qr [کلمه]\nتبدیل کلمه،لینک،... شما به بارکد\n➖➖➖➖➖➖\n#insta [id, Post Link]\nدریافت اطلاعات ایدی و ... از اینستاگرام!\n➖➖➖➖➖➖\n#write [text]\nطراحی کلمه مورد تظر با 17 فونت!\n➖➖➖➖➖➖\n#calc [2*2]\nمحاسبه جمع تفریق ضرب و...\n➖➖➖➖➖➖\n#porn [text]\nجستجو در 7 سایت +\n➖➖➖➖➖➖\n#time\nدریافت زمان دقیق!\n➖➖➖➖➖➖\n#support \nدریافت لینک گروه پشتیبانی!\n➖➖➖➖➖➖\n#setowner [reply, username]\nست کردن کاربر به عنوان خریدار گروه\n#promote [username|id]\nارتقاء مقام کاربر به ناظم گروه\n#demote [username|id]\nخلع مقام کردن کاربر از سمت ناظم ها\n➖➖➖➖➖➖\n#setname [text]\nتغییر اسم گروه\n#setphoto\nجایگزین کردن عکس گروه\n#setrules [text]\nگذاشتن قوانین برای گروه\n#setabout [text]\nگذاشتن متن توضیحات برای سوپر گروه(این متن در بخش توضیحات گروه هم نمایش داده میشه)\n➖➖➖➖➖➖\n#newlink\nساختن لینک جدید\n#link\nگرفتن لینک\n#linkpv\nارسال لینک گروه در پیوی شما!\n➖➖➖➖➖➖\n#rules\nنمایش قوانین\n➖➖➖➖➖➖\n#lock [links|flood|spam|Arabic|member|rtl|sticker|TgService|contacts|forward|badword|emoji|english|tag|webpage|strict]\nقفل کردن لینک گروها-اسپم-متن و اسم های بزرگ -زبان فارسی-تعداد اعضا-کاراکتر های غیر عادی-استیکر-مخاطبین-فروارد-فوش-اموجی-انگلیسی-تگ-لینک سایت\n\nدقت کنید اگر گذینه اخری strict روشن باشد کاربر از گروه کیک میشود و پیغام پاک میشه در غیر این صورت فقط پیغام پاک میشود\n➖➖➖➖➖➖\n#unlock [links|flood|spam|Arabic|member|rtl|sticker|contacts|TgService|strict|forward|badword|emoji|english]\nباز کردن قفل امکانات بالا\n➖➖➖➖➖➖\n#mute [all|audio|gifs|photo|video|text]\nپاک کردن سریع همه پیغام ها-عکس ها-گیف ها-صدا های ضبط شده-فیلم-متن\n➖➖➖➖➖➖\n#unmute [all|audio|gifs|photo|video|text]\nباز کردن قفل امکانات بالا\n➖➖➖➖➖➖\n#setflood [value]\nگذاشتن value به عنوان حساسیت اسپم\n➖➖➖➖➖➖\n#settings\nنمایش تنظیمات گروه\n➖➖➖➖➖➖\n#muteslist\nنمایش نوع پیغام های سایلنت شده\n*A \"muted\" message type is auto-deleted if posted\n➖➖➖➖➖➖\n#muteuser [username]\nسایلنت کردن یک کاربر خاص در گروه\nفقط خریدار (owner) میتونه کسیو سایلنت کنه ولی ناظم ها (Mods) میتونند فرد را از سایلنتی در بیاورند\n➖➖➖➖➖➖\n#mutelist\nنمایش لیست افراد سایلنت شده\n➖➖➖➖➖➖\n#clean [rules|about|modlist|mutelist|bots]\nپاک کردن لیست ناظم ها-درباره-لیست سایلنت شده ها-قوانین-بات ها\n➖➖➖➖➖➖\n#log\nبرگرداندن تاریخچه گروه در یک فایل متنی\n➖➖➖➖➖➖\n#version\nنمایش ورژن و ادمین های ربات!\n➖➖➖➖➖➖\n#plist\nدریافت لیست قیمت برای خرید گروه...\n➖➖➖➖➖➖\n#feedback [text]\nشما میتوانید با این دستور نظرات و پیشنهادات خود را برای ما ارسال کنید...\n➖➖➖➖➖➖\n| Channel : @Black_CH |\n"
 			reply_msg(msg.id, text, ok_cb, false)
 	end
 
-		if matches[1] == 'peer_id' and is_admin1(msg)then
+		if matches[1]:lower() == 'peer_id' and is_admin1(msg)then
 			text = msg.to.peer_id
 			reply_msg(msg.id, text, ok_cb, false)
 			post_large_msg(receiver, text)
 		end
 
-		if matches[1] == 'msg.to.id' and is_admin1(msg) then
+		if matches[1]:lower() == 'msg.to.id' and is_admin1(msg) then
 			text = msg.to.id
 			reply_msg(msg.id, text, ok_cb, false)
 			post_large_msg(receiver, text)
@@ -2387,7 +2387,7 @@ local function run(msg, matches)
 				end
 			end
 		end
-		if matches[1] == 'msg.to.peer_id' then
+		if matches[1]:lower() == 'msg.to.peer_id' then
 			post_large_msg(receiver, msg.to.peer_id)
 		end
 	end
@@ -2424,24 +2424,24 @@ return {
 	"^[#!/]([Ss][Ee][Tt][Ll][Ii][Nn][Kk])$",
 	"^[#!/]([Ll][Ii][Nn][Kk])$",
 	"^[#!/]([Rr][Ee][Ss]) (.*)$",
-	"^[#!/]([Ss]etadmin) (.*)$",
+	"^[#!/]([Ss][Ee][Tt][Aa][Dd][Mm][Ii][Nn]) (.*)$",
 	"^[#!/]([Ss]etadmin)",
 	"^[#!/]([Dd]emoteadmin) (.*)$",
 	"^[#!/]([Dd]emoteadmin)",
-	"^[#!/]([Ss]etowner) (.*)$",
+	"^[#!/]([Ss][Ee][Tt][Oo][Ww][Nn][Ee][Rr]) (.*)$",
 	"^[#!/]([Ss]etowner)$",
 	"^[#!/]([Pp]romote) (.*)$",
 	"^[#!/]([Pp]romote)",
 	"^[#!/]([Dd]emote) (.*)$",
 	"^[#!/]([Dd]emote)",
-	"^[#!/]([Ss]etname) (.*)$",
+	"^[#!/]([Ss][Ee][Tt][Nn][Aa][Mm][Ee]) (.*)$",
 	"^[#!/]([Ss]etabout) (.*)$",
 	"^[#!/]([Ss]etrules) (.*)$",
-	"^[#!/]([Ss]etphoto)$",
+	"^[#!/]([Ss][Ee][Tt][Pp][Hh][Oo][Tt][Oo])$",
 	"^[#!/]([Ss]etusername) (.*)$",
-	"^[#!/]([Dd]el)$",
+	"^[#!/]([Dd][Ee][Ll])$",
 	"^[#!/]([Ll][Oo][Cc][Kk]) (.*)$",
-	"^[#!/]([Ss]uperhelp)$",
+	"^[#!/]([Ss][Uu][Pp][Ee][Rr][Hh][Ee][Ll][Pp])$",
 	"^[#!/]([Uu][Nn][Ll][Oo][Cc][Kk]) (.*)$",
 	"^[#!/]([Mm]ute) ([^%s]+)$",
 	"^[#!/]([Uu]nmute) ([^%s]+)$",
@@ -2449,13 +2449,13 @@ return {
 	"^[#!/]([Mm]uteuser) (.*)$",
 	"^[#!/]([Pp]ublic) (.*)$",
 	"^[#!/]([Ss][Ee][Tt][Tt][Ii][Nn][Gg][Ss])$",
-	"^[#!/]([Rr]ules)$",
-	"^[#!/]([Ss]etflood) (%d+)$",
+	"^[#!/]([Rr][Uu][Ll][Ee][Ss])$",
+	"^[#!/]([Ss][Ee][Tt][Ff][Ll][Oo][Oo][Dd]) (%d+)$",
 	"^[#!/]([Cc]lean) (.*)$",
-	"^[#!/]([Hh]elp)$",
+	"^[#!/]([Hh][Ee][Ll][Pp])$",
 	"^[#!/]([Mm]uteslist)$",
 	"^[#!/]([Mm]utelist)$",
-    "^[#!/]([Ss][Ee][Tt][Ff][Ll][Oo][Oo][Dd][Tt][Ii][Mm][Ee]) (.*)$",
+    "^[#!/]([Ss][Ee][Tt][Ff][Ll][Oo][Oo][Dd][Tt][Ii][Mm][Ee]) (%d+)$",
 	"^([Aa]dd)$",
 	"^([Rr]em)$",
 	"^([Mm]ove) (.*)$",
