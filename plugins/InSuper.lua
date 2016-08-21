@@ -1,14 +1,4 @@
-﻿--[[
-
-     **************************
-     *  BlackPlus Plugins...  *
-     *                        *
-     *     By @MehdiHS        *
-     *                        *
-     *  Channel > @Black_Ch   *
-     **************************
-	 
-]]
+﻿
 --Begin supergrpup.lua
 --Check members #Add supergroup
 local function check_member_super(cb_extra, success, result)
@@ -789,11 +779,11 @@ end
 		end
 	end
   local settings = data[tostring(target)]['settings']
-  local text = "SuperGroup settings⚙:⏬\n-----------------------------------\nLock Links > "..settings.lock_link.."\nLock Webpage > "..settings.lock_webpage.."\nLock Tag > "..settings.lock_tag.."\nLock Emoji > "..settings.lock_emoji.."\nLock English > "..settings.lock_eng.."\nLock Badword > "..settings.lock_badw.."\nLock Flood > "..settings.flood.."\nFlood sensitivity > "..NUM_MSG_MAX.."\nLock Spam > "..settings.lock_spam.."\nFlood Time > "..CHECK_TIME.."\nLock Contacts > "..settings.lock_contacts.."\nLock Arabic/Persian > "..settings.lock_arabic.."\nLock Member > "..settings.lock_member.."\nLock RTL > "..settings.lock_rtl.."\nLock Forward > "..settings.lock_fwd.."\nLock TGservice > "..settings.lock_tgservice.."\nLock Sticker > "..settings.lock_sticker.."\nPublic > "..settings.public.."\nStrict Settings > "..settings.strict
+  local text = "SuperGroup settings:\n\nLock Links > "..settings.lock_link.."\nLock Webpage > "..settings.lock_webpage.."\nLock Tag > "..settings.lock_tag.."\nLock Emoji > "..settings.lock_emoji.."\nLock English > "..settings.lock_eng.."\nLock Badword > "..settings.lock_badw.."\nLock Flood > "..settings.flood.."\nFlood sensitivity > "..NUM_MSG_MAX.."\nLock Spam > "..settings.lock_spam.."\nLock Contacts > "..settings.lock_contacts.."\nLock Arabic/Persian > "..settings.lock_arabic.."\nLock Member > "..settings.lock_member.."\nLock RTL > "..settings.lock_rtl.."\nLock Forward > "..settings.lock_fwd.."\nLock TGservice > "..settings.lock_tgservice.."\nLock Sticker > "..settings.lock_sticker.."\nPublic > "..settings.public.."\nStrict Settings > "..settings.strict
   local text = string.gsub(text,'yes','🔐')
   local text = string.gsub(text,'no','🔓')
-   reply_msg(msg.id, text, ok_cb, false)
-   end
+  reply_msg(msg.id, text, ok_cb, false)
+end
 
 local function promote_admin(receiver, member_username, user_id)
   local data = load_data(_config.moderation.data)
@@ -1334,7 +1324,7 @@ local function run(msg, matches)
 			chat_upgrade(receiver, ok_cb, false)
 		end
 	elseif msg.to.type == 'channel'then
-		if matches[1]:lower () == 'upchat' then
+		if matches[1]:lower() == 'upchat' then
 			if not is_admin1(msg) then
 				return
 			end
@@ -2086,16 +2076,7 @@ local function run(msg, matches)
 			save_data(_config.moderation.data, data)
 			savelog(msg.to.id, name_log.." ["..msg.from.id.."] set flood to ["..matches[2].."]")
 			return 'Flood has been set to: '..matches[2]
-		end 
-        
-        if matches[1]:lower() == 'setfloodtime' then
-			if not is_momod(msg) then
-				return
-			end
-			if tonumber(matches[2]) < 2 or tonumber(matches[2]) > 50 then
-				return "Wrong number TIME FLOOD,range is [5-20]"
-			end
-			
+		end
 		if matches[1]:lower() == 'public' and is_momod(msg) then
 			local target = msg.to.id
 			if matches[2] == 'yes' then
@@ -2409,37 +2390,36 @@ return {
 	"^[#!/]([Ll][Ii][Nn][Kk])$",
 	"^[#!/]([Rr][Ee][Ss]) (.*)$",
 	"^[#!/]([Ss][Ee][Tt][Aa][Dd][Mm][Ii][Nn]) (.*)$",
-	"^[#!/]([Ss]etadmin)",
+	"^[#!/]([Ss][Ee][Tt][Aa][Dd][Mm][Ii][Nn])",
 	"^[#!/]([Dd]emoteadmin) (.*)$",
 	"^[#!/]([Dd]emoteadmin)",
 	"^[#!/]([Ss][Ee][Tt][Oo][Ww][Nn][Ee][Rr]) (.*)$",
-	"^[#!/]([Ss]etowner)$",
-	"^[#!/]([Pp]romote) (.*)$",
-	"^[#!/]([Pp]romote)",
-	"^[#!/]([Dd]emote) (.*)$",
-	"^[#!/]([Dd]emote)",
+	"^[#!/]([Ss][Ee][Tt][Oo][Ww][Nn][Ee][Rr])$",
+	"^[#!/]([Pp][Rr][Oo][Mm][Oo][Tt][Ee]) (.*)$",
+	"^[#!/]([Pp][Rr][Oo][Mm][Oo][Tt][Ee])",
+	"^[#!/]([Dd][Ee][Mm][Oo][Tt][Ee]) (.*)$",
+	"^[#!/]([Dd][Ee][Mm][Oo][Tt][Ee])",
 	"^[#!/]([Ss][Ee][Tt][Nn][Aa][Mm][Ee]) (.*)$",
-	"^[#!/]([Ss]etabout) (.*)$",
-	"^[#!/]([Ss]etrules) (.*)$",
+	"^[#!/]([Ss][Ee][Tt][Aa][Bb][Oo][Uu][Tt]) (.*)$",
+	"^[#!/]([Ss][Ee][Tt][Rr][Uu][Ll][Ee][Ss]) (.*)$",
 	"^[#!/]([Ss][Ee][Tt][Pp][Hh][Oo][Tt][Oo])$",
 	"^[#!/]([Ss]etusername) (.*)$",
 	"^[#!/]([Dd][Ee][Ll])$",
 	"^[#!/]([Ll][Oo][Cc][Kk]) (.*)$",
 	"^[#!/]([Ss][Uu][Pp][Ee][Rr][Hh][Ee][Ll][Pp])$",
 	"^[#!/]([Uu][Nn][Ll][Oo][Cc][Kk]) (.*)$",
-	"^[#!/]([Mm]ute) ([^%s]+)$",
-	"^[#!/]([Uu]nmute) ([^%s]+)$",
-	"^[#!/]([Mm]uteuser)$",
-	"^[#!/]([Mm]uteuser) (.*)$",
-	"^[#!/]([Pp]ublic) (.*)$",
+	"^[#!/]([Mm][Uu][Tt][Ee]) ([^%s]+)$",
+	"^[#!/]([Uu][Nn][Mm][Uu][Tt][Ee]) ([^%s]+)$",
+	"^[#!/]([Mm][Uu][Tt][Ee][Uu][Ss][Ee][Rr])$",
+	"^[#!/]([Mm][Uu][Tt][Ee][Uu][Ss][Ee][Rr]) (.*)$",
+	"^[#!/]([Pp][Uu][Bb][Ll][Ii][Cc]) (.*)$",
 	"^[#!/]([Ss][Ee][Tt][Tt][Ii][Nn][Gg][Ss])$",
 	"^[#!/]([Rr][Uu][Ll][Ee][Ss])$",
 	"^[#!/]([Ss][Ee][Tt][Ff][Ll][Oo][Oo][Dd]) (%d+)$",
-	"^[#!/]([Cc]lean) (.*)$",
+	"^[#!/]([Cc][Ll][Ee][Aa][Nn]) (.*)$",
 	"^[#!/]([Hh][Ee][Ll][Pp])$",
-	"^[#!/]([Mm]uteslist)$",
+	"^[#!/]([Mm][Uu][Tt][Ee][Ll][Ii][Ss][Tt])$",
 	"^[#!/]([Mm]utelist)$",
-    "^[#!/]([Ss][Ee][Tt][Ff][Ll][Oo][Oo][Dd][Tt][Ii][Mm][Ee]) (%d+)$",
 	"^([Aa]dd)$",
 	"^([Rr]em)$",
 	"^([Mm]ove) (.*)$",
