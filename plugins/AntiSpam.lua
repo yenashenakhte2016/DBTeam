@@ -4,10 +4,14 @@ kicktable = {}
 
 do
 
-local TIME_CHECK = 2 -- seconds
--- Save stats, ban user
+local TIME_CHECK = 2
 local function pre_process(msg)
-  -- Ignore service msg
+local hash = 'TIME_CHECK:'..msg.to.id
+local TIME_CHECK = tonumber(redis:get(hash))
+local data = load_data(_config.moderation.data)
+ if data[tostring(msg.to.id)] then
+      if data[tostring(msg.to.id)]['settings']['TIME_CHECK'] then
+        TIME_CHECK = tonumber(data[tostring(msg.to.id)]['settings']['TIME_CHECK'])--Obtain Time Check Flood
   if msg.service then
     return msg
   end
@@ -62,7 +66,6 @@ local function pre_process(msg)
       return msg
     end
   end
-
   -- Check flood
   if msg.from.type == 'user' then
     local hash = 'user:'..msg.from.id..':msgs'
