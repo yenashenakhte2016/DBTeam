@@ -1,14 +1,3 @@
---[[
-
-     **************************
-     *  BlackPlus Plugins...  *
-     *                        *
-     *     By @MehdiHS        *
-     *                        *
-     *  Channel > @Black_Ch   *
-     **************************
-	 
-]]
 local function pre_process(msg)
 if is_chat_msg(msg) or is_super_group(msg) then
 	if msg and not is_momod(msg) and not is_whitelisted(msg.from.id) then --if regular user
@@ -155,7 +144,7 @@ if is_chat_msg(msg) or is_super_group(msg) then
 					kick_user(msg.from.id, msg.to.id)
 				end
 			end
-			local is_badw_msg = msg.text:match("[Kk][Ii][Rr]") or msg.text:match("[Kk][Oo][Ss]") or msg.text:match("[Kk][Oo][Ss][Dd][Ee]") or msg.text:match("[Kk][Oo][Oo][Nn][Ii]") or msg.text:match("[Jj][Ee][Nn][Dd][Ee]") or msg.text:match("[Jj][Ee][Nn][Dd][Ee][Hh]") or msg.text:match("[Kk][Oo][Oo][Nn]") or msg.text:match("کیر") or msg.text:match("کسکش") or msg.text:match("کونی") or msg.text:match("جنده") or msg.text:match("حشری")
+			local is_badw_msg = msg.text:match("[Kk][Ii][Rr]") or msg.text:match("[Kk][Oo][Ss]") or msg.text:match("[Kk][Oo][Ss][Dd][Ee]") or msg.text:match("[Kk][Oo][Oo][Nn][Ii]") or msg.text:match("[Jj][Ee][Nn][Dd][Ee]") or msg.text:match("[Jj][Ee][Nn][Dd][Ee][Hh]") or msg.text:match("[Kk][Oo][Oo][Nn]") or msg.text:match("کیر") or msg.text:match("کسکش") or msg.text:match("کونی") or msg.text:match("جنده") or msg.text:match("حشری") or msg.text:match("گاو")  or msg.text:match("خر") or msg.text:match("کس") or msg.text:match("سیکتیر") or msg.text:match("سیک") or msg.text:match("خارکس")
 			if is_badw_msg and lock_badw == "yes" then
 				delete_msg(msg.id, ok_cb, false)
 				if strict == "yes" or to_chat then
@@ -235,7 +224,7 @@ if is_chat_msg(msg) or is_super_group(msg) then
 					kick_user(msg.from.id, msg.to.id)
 				end
 			end
-				local is_badw_title = msg.media.title:match("[Kk][Ii][Rr]") or msg.media.title:match("[Kk][Oo][Ss]") or msg.media.title:match("[Kk][Oo][Ss][Dd][Ee]") or msg.media.title:match("[Kk][Oo][Oo][Nn][Ii]") or msg.media.title:match("[Jj][Ee][Nn][Dd][Ee]") or msg.media.title:match("[Jj][Ee][Nn][Dd][Ee][Hh]") or msg.media.title:match("[Kk][Oo][Oo][Nn]") or msg.media.title:match("کیر") or msg.media.title:match("کسکش") or msg.media.title:match("کونی") or msg.media.title:match("جنده") or msg.media.title:match("حشری")
+				local is_badw_title = msg.media.title:match("[Kk][Ii][Rr]") or msg.media.title:match("[Kk][Oo][Ss]") or msg.media.title:match("[Kk][Oo][Ss][Dd][Ee]") or msg.media.title:match("[Kk][Oo][Oo][Nn][Ii]") or msg.media.title:match("[Jj][Ee][Nn][Dd][Ee]") or msg.media.title:match("[Jj][Ee][Nn][Dd][Ee][Hh]") or msg.media.title:match("[Kk][Oo][Oo][Nn]") or msg.media.title:match("کیر") or msg.media.title:match("کسکش") or msg.media.title:match("کونی") or msg.media.title:match("جنده") or msg.media.title:match("حشری") or msg.media.title:match("گاو")  or msg.media.title:match("خر") or msg.media.title:match("کس") or msg.media.title:match("سیکتیر") or msg.media.title:match("سیک") or msg.media.title:match("خارکس")
 			if is_badw_title and lock_badw == "yes" then
 				delete_msg(msg.id, ok_cb, false)
 				if strict == "yes" or to_chat then
@@ -294,7 +283,7 @@ if is_chat_msg(msg) or is_super_group(msg) then
 					
 				end
 			end
-			local is_badw_desc = msg.media.description:match("[Kk][Ii][Rr]") or msg.media.description:match("[Kk][Oo][Ss]") or msg.media.description:match("[Kk][Oo][Ss][Dd][Ee]") or msg.media.description:match("[Kk][Oo][Oo][Nn][Ii]") or msg.media.description:match("[Jj][Ee][Nn][Dd][Ee]") or msg.media.description:match("[Jj][Ee][Nn][Dd][Ee][Hh]") or msg.media.description:match("[Kk][Oo][Oo][Nn]") or msg.media.description:match("کیر") or msg.media.description:match("کسکش") or msg.media.description:match("کونی") or msg.media.description:match("جنده") or msg.media.description:match("حشری")
+			local is_badw_desc = msg.media.description:match("[Kk][Ii][Rr]") or msg.media.description:match("[Kk][Oo][Ss]") or msg.media.description:match("[Kk][Oo][Ss][Dd][Ee]") or msg.media.description:match("[Kk][Oo][Oo][Nn][Ii]") or msg.media.description:match("[Jj][Ee][Nn][Dd][Ee]") or msg.media.description:match("[Jj][Ee][Nn][Dd][Ee][Hh]") or msg.media.description:match("[Kk][Oo][Oo][Nn]") or msg.media.description:match("کیر") or msg.media.description:match("کسکش") or msg.media.description:match("کونی") or msg.media.description:match("جنده") or msg.media.description:match("حشری") or msg.media.description:match("گاو")  or msg.media.description:match("خر") or msg.media.description:match("کس") or msg.media.description:match("سیکتیر") or msg.media.description:match("سیک") or msg.media.description:match("خارکس")
 			if is_badw_desc and lock_badw == "yes" then
 				delete_msg(msg.id, ok_cb, false)
 				if strict == "yes" or to_chat then
@@ -358,7 +347,7 @@ if is_chat_msg(msg) or is_super_group(msg) then
 					kick_user(msg.from.id, msg.to.id)
 				end
 			end
-			local is_badw_caption = msg.media.caption:match("[Kk][Ii][Rr]") or msg.media.caption:match("[Kk][Oo][Ss]") or msg.media.caption:match("[Kk][Oo][Ss][Dd][Ee]") or msg.media.caption:match("[Kk][Oo][Oo][Nn][Ii]") or msg.media.caption:match("[Jj][Ee][Nn][Dd][Ee]") or msg.media.caption:match("[Jj][Ee][Nn][Dd][Ee][Hh]") or msg.media.caption:match("[Kk][Oo][Oo][Nn]") or msg.media.caption:match("کیر") or msg.media.caption:match("کسکش") or msg.media.caption:match("کونی") or msg.text:match("جنده") or msg.media.caption:match("حشری")
+			local is_badw_caption = msg.media.caption:match("[Kk][Ii][Rr]") or msg.media.caption:match("[Kk][Oo][Ss]") or msg.media.caption:match("[Kk][Oo][Ss][Dd][Ee]") or msg.media.caption:match("[Kk][Oo][Oo][Nn][Ii]") or msg.media.caption:match("[Jj][Ee][Nn][Dd][Ee]") or msg.media.caption:match("[Jj][Ee][Nn][Dd][Ee][Hh]") or msg.media.caption:match("[Kk][Oo][Oo][Nn]") or msg.media.caption:match("کیر") or msg.media.caption:match("کسکش") or msg.media.caption:match("کونی") or msg.media.caption:match("جنده") or msg.media.caption:match("حشری") or msg.media.caption:match("گاو")  or msg.media.caption:match("خر") or msg.media.caption:match("کس") or msg.media.caption:match("سیکتیر") or msg.media.caption:match("سیک") or msg.media.caption:match("خارکس")
 			if is_badw_caption and lock_badw == "yes" then
 				delete_msg(msg.id, ok_cb, false)
 				if strict == "yes" or to_chat then
@@ -457,7 +446,7 @@ if is_chat_msg(msg) or is_super_group(msg) then
 					kick_user(msg.from.id, msg.to.id)
 				end
 			end
-			local is_badw_title = msg.fwd_from.title:match("[Kk][Ii][Rr]") or msg.fwd_from.title:match("[Kk][Oo][Ss]") or msg.fwd_from.title:match("[Kk][Oo][Ss][Dd][Ee]") or msg.fwd_from.title:match("[Kk][Oo][Oo][Nn][Ii]") or msg.fwd_from.title:match("[Jj][Ee][Nn][Dd][Ee]") or msg.fwd_from.title:match("[Jj][Ee][Nn][Dd][Ee][Hh]") or msg.fwd_from.title:match("[Kk][Oo][Oo][Nn]") or msg.fwd_from.title:match("کیر") or msg.fwd_from.title:match("کسکش") or msg.fwd_from.title:match("کونی") or msg.fwd_from.title:match("جنده") or msg.fwd_from.title:match("حشری")
+			local is_badw_title = msg.fwd_from.title:match("[Kk][Ii][Rr]") or msg.fwd_from.title:match("[Kk][Oo][Ss]") or msg.fwd_from.title:match("[Kk][Oo][Ss][Dd][Ee]") or msg.fwd_from.title:match("[Kk][Oo][Oo][Nn][Ii]") or msg.fwd_from.title:match("[Jj][Ee][Nn][Dd][Ee]") or msg.fwd_from.title:match("[Jj][Ee][Nn][Dd][Ee][Hh]") or msg.fwd_from.title:match("[Kk][Oo][Oo][Nn]") or msg.fwd_from.title:match("کیر") or msg.fwd_from.title:match("کسکش") or msg.fwd_from.title:match("کونی") or msg.fwd_from.title:match("جنده") or msg.fwd_from.title:match("حشری") or msg.fwd_from.title:match("گاو")  or msg.fwd_from.title:match("خر") or msg.fwd_from.title:match("کس") or msg.fwd_from.title:match("سیکتیر") or msg.fwd_from.title:match("سیک") or msg.fwd_from.title:match("خارکس")
 			if is_badw_title and lock_badw == "yes" then
 				delete_msg(msg.id, ok_cb, false)
 				if strict == "yes" or to_chat then
@@ -557,14 +546,3 @@ return {
 	pre_process = pre_process
 }
 
---[[
-
-     **************************
-     *  BlackPlus Plugins...  *
-     *                        *
-     *     By @MehdiHS        *
-     *                        *
-     *  Channel > @Black_Ch   *
-     **************************
-	 
-]]
