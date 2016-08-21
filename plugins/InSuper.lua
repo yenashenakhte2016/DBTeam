@@ -799,11 +799,10 @@ end
 	end
   local settings = data[tostring(target)]['settings']
   local text = "SuperGroup settings:\n\nLock Links > "..settings.lock_link.."\nLock Webpage > "..settings.lock_webpage.."\nLock Tag > "..settings.lock_tag.."\nLock Emoji > "..settings.lock_emoji.."\nLock English > "..settings.lock_eng.."\nLock Badword > "..settings.lock_badw.."\nLock Flood > "..settings.flood.."\nFlood sensitivity > "..NUM_MSG_MAX.."\nLock Spam > "..settings.lock_spam.."\nFlood Time > "..TIME_CHECK.."\nLock Contacts > "..settings.lock_contacts.."\nLock Arabic/Persian > "..settings.lock_arabic.."\nLock Member > "..settings.lock_member.."\nLock RTL > "..settings.lock_rtl.."\nLock Forward > "..settings.lock_fwd.."\nLock TGservice > "..settings.lock_tgservice.."\nLock Sticker > "..settings.lock_sticker.."\nPublic > "..settings.public.."\nStrict Settings > "..settings.strict
-  reply_msg(msg.id, text, ok_cb, false)
   local text = string.gsub(text,'yes','[Yes|🔐]')
   local text = string.gsub(text,'no','[No|🔓]')
-   return text
-end
+   reply_msg(msg.id, text, ok_cb, false)
+   end
 
 local function promote_admin(receiver, member_username, user_id)
   local data = load_data(_config.moderation.data)
