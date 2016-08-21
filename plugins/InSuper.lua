@@ -715,8 +715,8 @@ function show_supergroup_settingsmod(msg, target)
     end
     local data = load_data(_config.moderation.data)
     if data[tostring(target)] then
-     	if data[tostring(target)]['settings']['TIME_CHECK'] then
-        	TIME_CHECK = tonumber(data[tostring(target)]['settings']['TIME_CHECK'])
+     	if data[tostring(target)]['settings']['flood_time'] then
+        	TIME_CHECK = tonumber(data[tostring(target)]['settings']['flood_time'])
         	print('custom'..TIME_CHECK)
       	else
         	TIME_CHECK = 2
@@ -2104,8 +2104,8 @@ local function run(msg, matches)
 			if tonumber(matches[2]) < 2 or tonumber(matches[2]) > 50 then
 				return "Wrong number,range is [5-20]"
 			end
-			local TIME_CHECK = matches[2]
-			data[tostring(msg.to.id)]['settings']['TIME_CHECK'] = TIME_CHECK
+			local flood_time = matches[2]
+			data[tostring(msg.to.id)]['settings']['floodtime'] = flood_time
 			save_data(_config.moderation.data, data)
 			savelog(msg.to.id, name_log.." ["..msg.from.id.."] set floodTime to ["..matches[2].."]")
 			return 'FloodTime Group has been set to: '..matches[2]
@@ -2455,7 +2455,7 @@ return {
 	"^[#!/]([Hh]elp)$",
 	"^[#!/]([Mm]uteslist)$",
 	"^[#!/]([Mm]utelist)$",
-    "^[#!/]([Ss][Ee][Tt][Ffl]]Oo][Oo][Dd][Tt][Ii][Mm][Ee]) (.*)$",
+    "^[#!/]([Ss][Ee][Tt][Ff][Ll][Oo][Oo][Dd][Tt][Ii][Mm][Ee]) (.*)$",
 	"^([Aa]dd)$",
 	"^([Rr]em)$",
 	"^([Mm]ove) (.*)$",
