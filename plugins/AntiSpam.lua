@@ -6,9 +6,13 @@ do
 
 local TIME_CHECK = 2
 local function pre_process(msg)
-local hash = 'TIME_CHECK:'..msg.to.id
+local hash = 'TIME_CHECK:'..msg.to.id..':msgs'
+local msgs = tonumber(redis:get(hash) or 0)
 local TIME_CHECK = tonumber(redis:get(hash))
 local data = load_data(_config.moderation.data)
+  local flood_time = TIME_CHECK * 1
+    if msgs > floodtime_msg then
+	  local chat = msg.to.id
  if data[tostring(msg.to.id)] then
       if data[tostring(msg.to.id)]['settings']['flood_time'] then
         TIME_CHECK = tonumber(data[tostring(msg.to.id)]['settings']['flood_time'])--Obtain Time Check Flood
