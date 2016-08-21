@@ -1,21 +1,23 @@
+--[[
 
+     **************************
+     *  BlackPlus Plugins...  *
+     *                        *
+     *     By @MehdiHS        *
+     *                        *
+     *  Channel > @Black_Ch   *
+     **************************
+	 
+]]
 --An empty table for solving multiple kicking problem(thanks to @topkecleon )
 kicktable = {}
 
 do
 
-local TIME_CHECK = 2
+local TIME_CHECK = 2 -- seconds
+-- Save stats, ban user
 local function pre_process(msg)
-local hash = 'TIME_CHECK:'..msg.to.id..':msgs'
-local msgs = tonumber(redis:get(hash) or 0)
-local TIME_CHECK = tonumber(redis:get(hash))
-local data = load_data(_config.moderation.data)
-  local TIME_CHECK = TIME_CHECK * 1
-    if msgs > TIME_CHECK_msg then
-	  local chat = msg.to.id
- if data[tostring(msg.to.id)] then
-      if data[tostring(msg.to.id)]['settings']['flood_time'] then
-        TIME_CHECK = tonumber(data[tostring(msg.to.id)]['settings']['flood_time'])--Obtain Time Check Flood
+  -- Ignore service msg
   if msg.service then
     return msg
   end
@@ -70,6 +72,7 @@ local data = load_data(_config.moderation.data)
       return msg
     end
   end
+
   -- Check flood
   if msg.from.type == 'user' then
     local hash = 'user:'..msg.from.id..':msgs'
@@ -87,6 +90,25 @@ local data = load_data(_config.moderation.data)
 	  local chat = msg.to.id
 	  local whitelist = "whitelist"
 	  local is_whitelisted = redis:sismember(whitelist, user)
+      
+       -check floodtime
+        if msg.from.type == 'user' then
+    local hash = 'user:'..msg.from.id..':msgs'
+    local msgs = tonumber(redis:get(hash) or 0)
+    local data = load_data(_config.moderation.data)
+    local CHECK_TIME = 5
+    if data[tostring(msg.to.id)] then
+      if data[tostring(msg.to.id)]['settings']['flood_time'] then
+        CHECK_TIME = tonumber(data[tostring(msg.to.id)]['settings']['flood_time'])--Obtain group flood sensitivity
+      end
+    end
+    local time_msg = CHECK_TIME * 1
+    if msgs > time_msg then
+	  local user = msg.from.id
+	  local chat = msg.to.id
+	  local whitelist = "whitelist"
+	  local is_whitelisted = redis:sismember(whitelist, user)
+    
       -- Ignore mods,owner and admins
       if is_momod(msg) then 
         return msg
@@ -143,13 +165,13 @@ local data = load_data(_config.moderation.data)
           local print_name = user_print_name(msg.from):gsub("‮", "")
 		  local name = print_name:gsub("_", "")
           --Send this to that chat
-          send_large_msg("chat#id"..msg.to.id, "> User [ "..name.." ]"..msg.from.id.." Banned for all @GroupSecurityBot Groups/SuperGroups!(spamming)")
-		  send_large_msg("channel#id"..msg.to.id, "> User [ "..name.." ]"..msg.from.id.." Banned for all @GroupSecurityBot Groups/SuperGroups!(#Spamming)")
+          send_large_msg("chat#id"..msg.to.id, "> User [ "..name.." ]"..msg.from.id.." Banned for all @BlackPlus Groups/SuperGroups!(spamming)")
+		  send_large_msg("channel#id"..msg.to.id, "> User [ "..name.." ]"..msg.from.id.." Banned for all @BlackPlus Groups/SuperGroups!(#Spamming)")
           local GBan_log = 'GBan_log'
 		  local GBan_log =  data[tostring(GBan_log)]
 		  for k,v in pairs(GBan_log) do
 			log_SuperGroup = v
-			gban_text = "> User [ "..name.." ] ( @"..username.." )"..msg.from.id.." Banned for all @GroupSecurityBot Groups/SuperGroups! ( "..msg.to.print_name.." ) [ "..msg.to.id.." ] (#Spamming)"
+			gban_text = "> User [ "..name.." ] ( @"..username.." )"..msg.from.id.." Banned for all @BlackPlus Groups/SuperGroups! ( "..msg.to.print_name.." ) [ "..msg.to.id.." ] (#Spamming)"
 			--send it to log group/channel
 			send_large_msg(log_SuperGroup, gban_text)
 		  end
@@ -175,3 +197,14 @@ return {
 }
 
 end
+--[[
+
+     **************************
+     *  BlackPlus Plugins...  *
+     *                        *
+     *     By @MehdiHS        *
+     *                        *
+     *  Channel > @Black_Ch   *
+     **************************
+	 
+]]
