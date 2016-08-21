@@ -799,8 +799,8 @@ end
 	end
   local settings = data[tostring(target)]['settings']
   local text = "SuperGroup settings:\n\nLock Links > "..settings.lock_link.."\nLock Webpage > "..settings.lock_webpage.."\nLock Tag > "..settings.lock_tag.."\nLock Emoji > "..settings.lock_emoji.."\nLock English > "..settings.lock_eng.."\nLock Badword > "..settings.lock_badw.."\nLock Flood > "..settings.flood.."\nFlood sensitivity > "..NUM_MSG_MAX.."\nLock Spam > "..settings.lock_spam.."\nFlood Time > "..TIME_CHECK.."\nLock Contacts > "..settings.lock_contacts.."\nLock Arabic/Persian > "..settings.lock_arabic.."\nLock Member > "..settings.lock_member.."\nLock RTL > "..settings.lock_rtl.."\nLock Forward > "..settings.lock_fwd.."\nLock TGservice > "..settings.lock_tgservice.."\nLock Sticker > "..settings.lock_sticker.."\nPublic > "..settings.public.."\nStrict Settings > "..settings.strict
-  local text = string.gsub(text,'yes','[Yes|🔐]')
-  local text = string.gsub(text,'no','[No|🔓]')
+  local text = string.gsub(text,'yes','🔐')
+  local text = string.gsub(text,'no','🔓')
    reply_msg(msg.id, text, ok_cb, false)
    end
 
@@ -2095,7 +2095,23 @@ local function run(msg, matches)
 			save_data(_config.moderation.data, data)
 			savelog(msg.to.id, name_log.." ["..msg.from.id.."] set flood to ["..matches[2].."]")
 			return 'Flood has been set to: '..matches[2]
+		end 
+        
+        if matches[1] == 'setfloodtime' then
+			if not is_momod(msg) then
+				return
+			end
+			if tonumber(matches[2]) < 2 or tonumber(matches[2]) > 50 then
+				return "Wrong number,range is [5-20]"
+			end
+			local TIME_CHECK = matches[2]
+			data[tostring(msg.to.id)]['settings']['TIME_CHECK'] = TIME_CHECK
+			save_data(_config.moderation.data, data)
+			savelog(msg.to.id, name_log.." ["..msg.from.id.."] set floodTime to ["..matches[2].."]")
+			return 'FloodTime Group has been set to: '..matches[2]
 		end
+
+
 		if matches[1] == 'public' and is_momod(msg) then
 			local target = msg.to.id
 			if matches[2] == 'yes' then
@@ -2386,27 +2402,28 @@ end
 
 return {
   patterns = {
-	"^[#!/]([Aa]dd)$",
-	"^[#!/]([Rr]em)$",
-	"^[#!/]([Mm]ove) (.*)$",
-	"^[#!/]([Ii]nfo)$",
-	"^[#!/]([Aa]dmins)$",
-	"^[#!/]([Oo]wner)$",
-	"^[#!/]([Mm]odlist)$",
-	"^[#!/]([Bb]ots)$",
-	"^[#!/]([Ww]ho)$",
-	"^[#!/]([Kk]icked)$",
-    "^[#!/]([Kk]ick) (.*)",
-	"^[#!/]([Kk]ick)",
-	"^[#!/]([Uu]pchat)$",
+	"^[#!/]([Aa][Dd][Dd])$",
+	"^[#!/]([Rr][Ee][Mm])$",
+	"^[#!/]([Mm][Oo][Vv][Ee]) (.*)$",
+	"^[#!/]([Ii][Nn][Ff][Oo])$",
+    "^[#!/]([Ss][Ee][Tt][Ff][Ll][Oo][Oo][Tt][Ii][Mm][Ee]) (.*)",
+	"^[#!/]([Aa][Dd][Mm][Ii][Nn][Ss])$",
+	"^[#!/]([Oo][Ww][Nn][Ee][Rr])$",
+	"^[#!/]([Mm][Oo][Dd][Ll][Ii][Ss][Tt])$",
+	"^[#!/]([Bb][Oo][Tt][Ss])$",
+	"^[#!/]([Ww][Hh][Oo])$",
+	"^[#!/]([Kk][Ii][Cc][Kk][Ee][Dd])$",
+    "^[#!/]([Kk][Ii][Cc][Kk]) (.*)",
+	"^[#!/]([Kk][Ii][Cc][Kk])",
+	"^[#!/]([Uu][Pp][Cc][Hh][Aa][Tt])$",
 	"^[#!/]([Ii][Dd])$",
 	"^[#!/]([Ii][Dd]) (.*)$",
-	"^[#!/]([Kk]ickme)$",
-	"^[#!/]([Kk]ick) (.*)$",
-	"^[#!/]([Nn]ewlink)$",
-	"^[#!/]([Ss]etlink)$",
-	"^[#!/]([Ll]ink)$",
-	"^[#!/]([Rr]es) (.*)$",
+	"^[#!/]([Kk][Ii][Cc][Kk][Mm][Ee])$",
+	"^[#!/]([Kk][Ii][Cc][Kk]) (.*)$",
+	"^[#!/]([Nn][Ee][Ww][Ll][Ii][Nn][Kk])$",
+	"^[#!/]([Ss][Ee][Tt][Ll][Ii][Nn][Kk])$",
+	"^[#!/]([Ll][Ii][Nn][Kk])$",
+	"^[#!/]([Rr][Ee][Ss]) (.*)$",
 	"^[#!/]([Ss]etadmin) (.*)$",
 	"^[#!/]([Ss]etadmin)",
 	"^[#!/]([Dd]emoteadmin) (.*)$",
@@ -2423,21 +2440,22 @@ return {
 	"^[#!/]([Ss]etphoto)$",
 	"^[#!/]([Ss]etusername) (.*)$",
 	"^[#!/]([Dd]el)$",
-	"^[#!/]([Ll]ock) (.*)$",
+	"^[#!/]([Ll][Oo][Cc][Kk]) (.*)$",
 	"^[#!/]([Ss]uperhelp)$",
-	"^[#!/]([Uu]nlock) (.*)$",
+	"^[#!/]([Uu][Nn][Ll][Oo][Cc][Kk]) (.*)$",
 	"^[#!/]([Mm]ute) ([^%s]+)$",
 	"^[#!/]([Uu]nmute) ([^%s]+)$",
 	"^[#!/]([Mm]uteuser)$",
 	"^[#!/]([Mm]uteuser) (.*)$",
 	"^[#!/]([Pp]ublic) (.*)$",
-	"^[#!/]([Ss]ettings)$",
+	"^[#!/]([Ss][Ee][Tt][Tt][Ii][Nn][Gg][Ss])$",
 	"^[#!/]([Rr]ules)$",
 	"^[#!/]([Ss]etflood) (%d+)$",
 	"^[#!/]([Cc]lean) (.*)$",
 	"^[#!/]([Hh]elp)$",
 	"^[#!/]([Mm]uteslist)$",
 	"^[#!/]([Mm]utelist)$",
+    "^[#!/]([Ss][Ee][Tt][Ffl]]Oo][Oo][Dd][Tt][Ii][Mm][Ee]) (.*)$",
 	"^([Aa]dd)$",
 	"^([Rr]em)$",
 	"^([Mm]ove) (.*)$",
