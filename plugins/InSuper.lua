@@ -793,6 +793,7 @@ end
   reply_msg(msg.id, text, ok_cb, false)
   local text = string.gsub(text,'yes','[Yes|🔐]')
   local text = string.gsub(text,'no','[No|🔓]')
+    return text
 end
 
 local function promote_admin(receiver, member_username, user_id)
