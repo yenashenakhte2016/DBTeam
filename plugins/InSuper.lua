@@ -713,15 +713,7 @@ function show_supergroup_settingsmod(msg, target)
       	else
         	NUM_MSG_MAX = 5
       	end
-    local data = load_data(_config.moderation.data)
-    if data[tostring(target)] then
-     	if data[tostring(target)]['settings']['flood_time'] then
-        	CHECK_TIME = tonumber(data[tostring(target)]['settings']['flood_time'])
-        	print('custom'..CHECK_TIME)
-      	else
-        	CHECK_TIME = 2
-      	end
-    end
+     end
 	if data[tostring(target)]['settings'] then
 		if not data[tostring(target)]['settings']['public'] then
 			data[tostring(target)]['settings']['public'] = 'no'
@@ -2104,14 +2096,7 @@ local function run(msg, matches)
 			if tonumber(matches[2]) < 2 or tonumber(matches[2]) > 50 then
 				return "Wrong number TIME FLOOD,range is [5-20]"
 			end
-			local flood_time = matches[2]
-			data[tostring(msg.to.id)]['settings']['flood_time'] = CHECK_TIME
-			save_data(_config.moderation.data, data)
-			savelog(msg.to.id, name_log.." ["..msg.from.id.."] set floodTime to ["..matches[2].."]")
-			return 'FloodTime Group has been set to: '..matches[2]
-		end
-
-
+			
 		if matches[1]:lower() == 'public' and is_momod(msg) then
 			local target = msg.to.id
 			if matches[2] == 'yes' then
