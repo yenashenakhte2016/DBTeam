@@ -205,7 +205,8 @@ local function lock_group_links(msg, data, target)
       end
     data[tostring(target)]['settings']['lock_link'] = 'yes'
     save_data(_config.moderation.data, data)
-    local hash = 'group:'..msg.to.id
+    if group_spam_lock == 'yes' then
+  local hash = 'group:'..msg.to.id
   if group_lang then
   local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #Link posting has been #locked", ok_cb, false)
@@ -230,6 +231,10 @@ local function unlock_group_links(msg, data, target)
      end
     data[tostring(target)]['settings']['lock_link'] = 'no'
     save_data(_config.moderation.data, data)
+    if group_spam_lock == 'yes' then
+  local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,">#Links Has Been #Unlocked", ok_cb, false)
     else
      return reply_msg(msg.id,"قفل ارسال لینک آزاد شد", ok_cb, false)
