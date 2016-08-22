@@ -195,11 +195,22 @@ local function lock_group_links(msg, data, target)
   end
   local group_link_lock = data[tostring(target)]['settings']['lock_link']
   if group_link_lock == 'yes' then
+  local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #Link posting is #already locked", ok_cb, false)
   else
+    return reply_msg(msg.id,"قفل ارسال لینک از قبل فعال است.", ok_cb, false)
+     end
+      end
     data[tostring(target)]['settings']['lock_link'] = 'yes'
     save_data(_config.moderation.data, data)
+    local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #Link posting has been #locked", ok_cb, false)
+    else
+     return reply_msg(msg.id,"> قفل ارسال لینک فعال شد", ok_cb, false)
   end
 end
 
@@ -209,11 +220,19 @@ local function unlock_group_links(msg, data, target)
   end
   local group_link_lock = data[tostring(target)]['settings']['lock_link']
   if group_link_lock == 'no' then
-    return reply_msg(msg.id,"> #Link posting is #not locked", ok_cb, false)
-  else
+     local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
+     return reply_msg(msg.id,"> #Link posting is #not locked", ok_cb, false)
+      else
+       return reply_msg(msg.id,"> قفل ارسال لینک فعال نبوده", ok_cb, false)
+     end
+     end
     data[tostring(target)]['settings']['lock_link'] = 'no'
     save_data(_config.moderation.data, data)
-    return reply_msg(msg.id,"> #Link posting has been #unlocked", ok_cb, false)
+    return reply_msg(msg.id,">#Links Has Been #Unlocked", ok_cb, false)
+    else
+     return reply_msg(msg.id,"قفل ارسال لینک آزاد شد", ok_cb, false)
   end
 end
 
@@ -221,16 +240,24 @@ local function lock_group_spam(msg, data, target)
   if not is_momod(msg) then
     return
   end
-  if not is_owner(msg) then
-    return reply_msg(msg.id,"*Owners only!", ok_cb, false)
-  end
   local group_spam_lock = data[tostring(target)]['settings']['lock_spam']
   if group_spam_lock == 'yes' then
-    return reply_msg(msg.id,"> SuperGroup #spam is #already locked", ok_cb, false)
+  local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
+    return reply_msg(msg.id,"> #Spam is already locked", ok_cb, false)
   else
+    return reply_msg(msg.id,"قفل اسپم از قبل فعال است.", ok_cb, false)
+     end
+      end
     data[tostring(target)]['settings']['lock_spam'] = 'yes'
     save_data(_config.moderation.data, data)
-    return reply_msg(msg.id,"> SuperGroup #spam has been #locked", ok_cb, false)
+    local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
+    return reply_msg(msg.id,"> #Spam has been #locked", ok_cb, false)
+    else
+     return reply_msg(msg.id,"> قفل اسپم در این سوپرگروه فعال شد", ok_cb, false)
   end
 end
 
@@ -240,11 +267,19 @@ local function unlock_group_spam(msg, data, target)
   end
   local group_spam_lock = data[tostring(target)]['settings']['lock_spam']
   if group_spam_lock == 'no' then
-    return reply_msg(msg.id,"> SuperGroup #spam is #not locked", ok_cb, false)
+     local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
+    return reply_msg(msg.id,"> قفل اسپم در سوپرگروه از قبل فعال نبوده است", ok_cb, false)
   else
+     return reply_msg(msg.id,"> #Link posting is #not locked", ok_cb, false)
+     end
+     end
     data[tostring(target)]['settings']['lock_spam'] = 'no'
     save_data(_config.moderation.data, data)
-    return reply_msg(msg.id,"> SuperGroup #spam has been #unlocked", ok_cb, false)
+    return reply_msg(msg.id,">#Spam Has Been #Unlocked", ok_cb, false)
+     else
+     return reply_msg(msg.id"قفل اسپم در این سوپرگروه آزاد شد", ok_cb, false)
   end
 end
 
@@ -254,11 +289,22 @@ local function lock_group_flood(msg, data, target)
   end
   local group_flood_lock = data[tostring(target)]['settings']['flood']
   if group_flood_lock == 'yes' then
+    local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #Spamming is #already locked", ok_cb, false)
   else
+      return reply_msg(msg.id,"قفل پیام سریع از قبل فعال بوده است", ok_cb, false)
+      end
+       end
     data[tostring(target)]['settings']['flood'] = 'yes'
     save_data(_config.moderation.data, data)
+     local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #Spamming has been #locked", ok_cb, false)
+     else
+      return reply_msg(msg.id,"قفل پیام سریع فعال شد", ok_cb, false)
   end
 end
 
@@ -268,11 +314,22 @@ local function unlock_group_flood(msg, data, target)
   end
   local group_flood_lock = data[tostring(target)]['settings']['flood']
   if group_flood_lock == 'no' then
+    local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #Spamming is #not locked", ok_cb, false)
   else
+     return reply_msg(msg.id,"قفل پیام سریع از قبل قفل نبوده است", ok_cb, false)
+      end
+        end
     data[tostring(target)]['settings']['flood'] = 'no'
     save_data(_config.moderation.data, data)
+     local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #Spamming has been #unlocked", ok_cb, false)
+     else
+      return reply_msg(msg.id,"قفل پیام سریع آزاد شد", ok_cb, false)
   end
 end
 
@@ -282,11 +339,22 @@ local function lock_group_arabic(msg, data, target)
   end
   local group_arabic_lock = data[tostring(target)]['settings']['lock_arabic']
   if group_arabic_lock == 'yes' then
+    local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #Arabic/Persian is #already locked", ok_cb, false)
   else
+     return reply_msg(msg.id,"قفل زبان فارسی/عربی از قفل فعال بوده است", ok_cb, false)
+    end
+     end
     data[tostring(target)]['settings']['lock_arabic'] = 'yes'
     save_data(_config.moderation.data, data)
+      local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #Arabic/Persian has been #locked", ok_cb, false)
+    else
+     return reply_msg(msg.id,"قفل زبان فارسی/عربی فعال شد", ok_cb, false)
   end
 end
 
@@ -296,25 +364,45 @@ local function unlock_group_arabic(msg, data, target)
   end
   local group_arabic_lock = data[tostring(target)]['settings']['lock_arabic']
   if group_arabic_lock == 'no' then
+   local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #Arabic/Persian is #already unlocked", ok_cb, false)
   else
+    return reply_msg(msg.id,"قفل زبان فارسی/عربی از قبل فعال نبوده است", ok_cb, false)
+    end
+     end
     data[tostring(target)]['settings']['lock_arabic'] = 'no'
     save_data(_config.moderation.data, data)
+     local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #Arabic/Persian has been #unlocked", ok_cb, false)
+     else
+      return reply_msg(msg.id,"قفل زبان فارسی/عربی آزاد شد", ok_cb, false)
   end
 end
--- Tag Fanction by MehdiHS!
+
 local function lock_group_tag(msg, data, target)
   if not is_momod(msg) then
     return
   end
   local group_tag_lock = data[tostring(target)]['settings']['lock_tag']
   if group_tag_lock == 'yes' then
+   local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #Tag is #already locked", ok_cb, false)
   else
+    return reply_msg(msg.id,"قفل ارسال تگ از قبل قفل است", ok_cb, false)
+    end
+     end
     data[tostring(target)]['settings']['lock_tag'] = 'yes'
     save_data(_config.moderation.data, data)
-    return reply_msg(msg.id,"> #Tag has been #locked", ok_cb, false)
+     local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
+    return reply_msg(msg.id,"قفل ارسال تگ فعال شد", ok_cb, false)
   end
 end
 
@@ -324,26 +412,44 @@ local function unlock_group_tag(msg, data, target)
   end
   local group_tag_lock = data[tostring(target)]['settings']['lock_tag']
   if group_tag_lock == 'no' then
-    return reply_msg(msg.id,"> #Tag is #already unlocked", ok_cb, false)
+     local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
+    return reply_msg(msg.id,"قفل ارسال تگ از قبل فعال نبوده است", ok_cb, false)
   else
     data[tostring(target)]['settings']['lock_tag'] = 'no'
     save_data(_config.moderation.data, data)
+    local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> Tag has been #unlocked", ok_cb, false)
+     return reply_msg(msg.id,"قفل ارسال تگ آزاد شد", ok_cb, false)
   end
 end
--- WebPage Fanction by MehdiHS!
+
 local function lock_group_webpage(msg, data, target)
   if not is_momod(msg) then
     return
   end
   local group_webpage_lock = data[tostring(target)]['settings']['lock_webpage']
   if group_webpage_lock == 'yes' then
+    local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #WebLink Posting is #already locked!", ok_cb, false)
   else
+    return reply_msg(msg.id,"قفل ارسال لینک وبسایت از قبل فعال بوده است", ok_cb, false)
+    end
+     end
     data[tostring(target)]['settings']['lock_webpage'] = 'yes'
     save_data(_config.moderation.data, data)
+     local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #WebLink posting has been #locked", ok_cb, false)
-  end
+     else
+       return reply_msg(msg.id,"قفل ارسال لینک وبسایت فعال شد", ok_cb, false)
+    end
 end
 
 local function unlock_group_webpage(msg, data, target)
@@ -352,25 +458,47 @@ local function unlock_group_webpage(msg, data, target)
   end
   local group_webpage_lock = data[tostring(target)]['settings']['lock_webpage']
   if group_webpage_lock == 'no' then
+   local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #WebLink Posting is #already unlocked", ok_cb, false)
   else
+     return reply_msg(msg.id,"قفل ارسال لینک وبسایت از قبل قفل نبوده است", ok_cb, false)
+    end
+     end
     data[tostring(target)]['settings']['lock_webpage'] = 'no'
     save_data(_config.moderation.data, data)
+     local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #WebLink posting has been #unlocked", ok_cb, false)
+     else
+      return reply_msg(msg.id,"قفل ارسال لینک وبسایت آزاد شد", ok_cb, false)
   end
 end
--- Anti Fwd Fanction by MehdiHS!
+
 local function lock_group_fwd(msg, data, target)
   if not is_momod(msg) then
     return
   end
   local group_fwd_lock = data[tostring(target)]['settings']['lock_fwd']
   if group_fwd_lock == 'yes' then
+     local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #Forward Msg is #already locked!", ok_cb, false)
   else
+     return reply_msg(msg.id,"قفل پیام فروراد از قبل فعال بوده است", ok_cb, false)
+    end
+     end
     data[tostring(target)]['settings']['lock_fwd'] = 'yes'
     save_data(_config.moderation.data, data)
-    return reply_msg(msg.id,"> #Forward Msg has been #locked", ok_cb, false)
+     local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
+    return reply_msg(msg.id,"#ForWard Msg Has Been #Locked", ok_cb, false)
+     else
+     return reply_msg(msg.id,"قفل پیام فروراد فعال شد", ok_cb, false)
   end
 end
 
@@ -380,25 +508,47 @@ local function unlock_group_fwd(msg, data, target)
   end
   local group_fwd_lock = data[tostring(target)]['settings']['lock_fwd']
   if group_fwd_lock == 'no' then
+    local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #Forward Msg is #already unlocked", ok_cb, false)
   else
+      return reply_msg(msg.id,"قفل پیام فروراد از قبل فعال نبوده است", ok_cb, false)
+    end
+     end
     data[tostring(target)]['settings']['lock_fwd'] = 'no'
     save_data(_config.moderation.data, data)
+      local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #Forward Msg has been #unlocked", ok_cb, false)
+    else
+     return reply_msg(msg.id,"قفل پیام فروراد آزاد شد", ok_cb, false)
   end
 end
--- lock badword Fanction by MehdiHS!
+
 local function lock_group_badw(msg, data, target)
   if not is_momod(msg) then
     return
   end
   local group_badw_lock = data[tostring(target)]['settings']['lock_badw']
   if group_badw_lock == 'yes' then
+    local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #Badwords is #already locked!", ok_cb, false)
   else
+    return reply_msg(msg.id,"قفل پیام فحش از قبل فعال بوده است", ok_cb, false)
+    end
+     end
     data[tostring(target)]['settings']['lock_badw'] = 'yes'
     save_data(_config.moderation.data, data)
+      local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #Badwords Has been #locked!", ok_cb, false)
+     else
+      return reply_msg(msg.id,"قفل پیام فحش فعال شد", ok_cb, false)
   end
 end
 
@@ -408,25 +558,49 @@ local function unlock_group_badw(msg, data, target)
   end
   local group_badw_lock = data[tostring(target)]['settings']['lock_badw']
   if group_badw_lock == 'no' then
+    local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #Badwords is #already unlocked", ok_cb, false)
   else
+     return reply_msg(msg.id,"قفل پیام فحش از قبل فعال نبوده است", ok_cb, false)
+    end
+     end
     data[tostring(target)]['settings']['lock_badw'] = 'no'
     save_data(_config.moderation.data, data)
+    local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #Badwords has been #unlocked", ok_cb, false)
+     else
+      return reply_msg(msg.id,"قفل پیام فحش آزاد شد", ok_cb, false)
+    end
+     end
   end
 end
--- lock emoji Fanction by MehdiHS!
+
 local function lock_group_emoji(msg, data, target)
   if not is_momod(msg) then
     return
   end
   local group_emoji_lock = data[tostring(target)]['settings']['lock_emoji']
   if group_emoji_lock == 'yes' then
+    local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #Emoji is #already locked!", ok_cb, false)
   else
+     return reply_msg(msg.id,"قفل ارسال اموجی از قبل فعال است", ok_cb, false)
+    end
+     end
     data[tostring(target)]['settings']['lock_emoji'] = 'yes'
     save_data(_config.moderation.data, data)
-    return reply_msg(msg.id,"> #Emoji Has been #locked!", ok_cb, false)
+    local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
+    return reply_msg(msg.id,"> #Emoji Has Been #Locked", ok_cb, false)
+    else
+     return reply_msg(msg.id,"قفل ارسال اموجی فعال شد", ok_cb, false)
   end
 end
 
@@ -436,25 +610,47 @@ local function unlock_group_emoji(msg, data, target)
   end
   local group_emoji_lock = data[tostring(target)]['settings']['lock_emoji']
   if group_emoji_lock == 'no' then
+    local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #Emoji is #already unlocked", ok_cb, false)
   else
+    return reply_msg(msg.id,"قفل ارسال اموجی از قبل فعال نبوده است", ok_cb, false)
+    end
+     end
     data[tostring(target)]['settings']['lock_emoji'] = 'no'
     save_data(_config.moderation.data, data)
+     local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #Emoji has been #unlocked", ok_cb, false)
+    else
+     return reply_msg(msg.id,"قفل ارسال اموجی آزاد شد", ok_cb, false)
   end
 end
--- lock English Fanction by MehdiHS!
+
 local function lock_group_eng(msg, data, target)
   if not is_momod(msg) then
     return
   end
   local group_eng_lock = data[tostring(target)]['settings']['lock_eng']
   if group_eng_lock == 'yes' then
+    local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #English is #already locked!", ok_cb, false)
   else
+    return reply_msg(msg.id,"قفل ارسال پیام انگلیسی از قبل فعال بوده است", ok_cb, false)
+    end
+     end
     data[tostring(target)]['settings']['lock_eng'] = 'yes'
     save_data(_config.moderation.data, data)
+    local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #English Has been #locked!", ok_cb, false)
+     else
+      return reply_msg(msg.id,"قفل ارسال پیام انگلیسی فعال شد", ok_cb, false)
   end
 end
 
@@ -464,24 +660,47 @@ local function unlock_group_eng(msg, data, target)
   end
   local group_eng_lock = data[tostring(target)]['settings']['lock_eng']
   if group_eng_lock == 'no' then
+   local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #English is #already unlocked", ok_cb, false)
   else
+    return reply_msg(msg.id,"قفل ارسال پیام انگلیسی از قبل قفل نبوده است", ok_cb, false)
+    end
+     end
     data[tostring(target)]['settings']['lock_eng'] = 'no'
     save_data(_config.moderation.data, data)
+    local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #English has been #unlocked", ok_cb, false)
+     else
+     return reply_msg(msg.id,"قفل ارسال پیام انگلیسی آزاد شد", ok_cb, false)
   end
 end
+
 local function unlock_group_membermod(msg, data, target)
   if not is_momod(msg) then
     return
   end
   local group_member_lock = data[tostring(target)]['settings']['lock_member']
   if group_member_lock == 'no' then
+     local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> SuperGroup #members are #not locked", ok_cb, false)
   else
+    return reply_msg(msg.id,"اددکردن ممبر از قبل فعال بوده است", ok_cb, false)
+    end
+     end
     data[tostring(target)]['settings']['lock_member'] = 'no'
     save_data(_config.moderation.data, data)
+    local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> SuperGroup #members has been #unlocked", ok_cb, false)
+    else
+     return reply_msg(msg.id,"قفل اددممبر آزاد شد", ok_cb, false)
   end
 end
 
@@ -491,11 +710,22 @@ local function lock_group_rtl(msg, data, target)
   end
   local group_rtl_lock = data[tostring(target)]['settings']['lock_rtl']
   if group_rtl_lock == 'yes' then
+     local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #RTL is #already locked", ok_cb, false)
   else
+     return reply_msg(msg.id,"حذف عضو با اسپم بلند از قبل فعال بوده است", ok_cb, false)
+    end
+     end
     data[tostring(target)]['settings']['lock_rtl'] = 'yes'
     save_data(_config.moderation.data, data)
+    local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #RTL has been #Locked", ok_cb, false)
+    else
+      return reply_msg(msg.id,"حذف عضو با اسم بلند فعال شد", ok_cb, false)
   end
 end
 
@@ -505,11 +735,22 @@ local function unlock_group_rtl(msg, data, target)
   end
   local group_rtl_lock = data[tostring(target)]['settings']['lock_rtl']
   if group_rtl_lock == 'no' then
+     local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #RTL is #already unlocked", ok_cb, false)
   else
+    return reply_msg(msg.id,"حذف عضو با اسم بلند از قبل فعال نبوده است", ok_cb, false)
+    end
+     end
     data[tostring(target)]['settings']['lock_rtl'] = 'no'
     save_data(_config.moderation.data, data)
+     local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #RTL has been #unlocked", ok_cb, false)
+     else
+      return reply_msg(msg.id,"قفل حذف عضو با اسپم بلند آزاد شد", ok_cb, false)
   end
 end
 
@@ -519,11 +760,22 @@ local function lock_group_tgservice(msg, data, target)
   end
   local group_tgservice_lock = data[tostring(target)]['settings']['lock_tgservice']
   if group_tgservice_lock == 'yes' then
+     local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #TgService is #already locked", ok_cb, false)
   else
+    return reply_msg(msg.id,"قفل حذف پیام ورود و خروج از قبل فعال بوده است", ok_cb, false)
+    end
+     end
     data[tostring(target)]['settings']['lock_tgservice'] = 'yes'
     save_data(_config.moderation.data, data)
+      local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #TGservice has been #locked", ok_cb, false)
+    else
+      return reply_msg(msg.id,"قفل حذف پیام ورود و خروج فعال شد", ok_cb, false)
   end
 end
 
@@ -533,11 +785,22 @@ local function unlock_group_tgservice(msg, data, target)
   end
   local group_tgservice_lock = data[tostring(target)]['settings']['lock_tgservice']
   if group_tgservice_lock == 'no' then
+     local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #TgService Is #Not Locked!", ok_cb, false)
   else
+       return reply_msg(msg.id,"قفل حذف پیام ورود و خروج از قبل فعال نبوده است", ok_cb, false)
+    end
+     end
     data[tostring(target)]['settings']['lock_tgservice'] = 'no'
     save_data(_config.moderation.data, data)
+     local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #TGservice has been #unlocked", ok_cb, false)
+     else
+      return reply_msg(msg.id,"قفل حذف پیام ورود و خروج آزاد شد", ok_cb, false)
   end
 end
 
@@ -547,11 +810,22 @@ local function lock_group_sticker(msg, data, target)
   end
   local group_sticker_lock = data[tostring(target)]['settings']['lock_sticker']
   if group_sticker_lock == 'yes' then
+    local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #Sticker posting is #already locked", ok_cb, false)
   else
+    return reply_msg(msg.id,"قفل حذف استیکر از قبل فعال بوده است", ok_cb, false)
+    end
+     end
     data[tostring(target)]['settings']['lock_sticker'] = 'yes'
     save_data(_config.moderation.data, data)
+    local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #Sticker posting has been #locked", ok_cb, false)
+     else
+      return reply_msg(msg.id,"قفل حذف استیکر فعال شد", ok_cb, false)
   end
 end
 
@@ -561,11 +835,22 @@ local function unlock_group_sticker(msg, data, target)
   end
   local group_sticker_lock = data[tostring(target)]['settings']['lock_sticker']
   if group_sticker_lock == 'no' then
-    return reply_msg(msg.id,"> #Sticker posting is #already unlocked", ok_cb, false)
-  else
+    local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
+     return reply_msg(msg.id,"> #Arabic/Persian is #already locked", ok_cb, false)
+     else
+        return reply_msg(msg.id,"قفل حذف استیکر از قبل فعال نبوده است", ok_cb, false)
+    end
+     end
     data[tostring(target)]['settings']['lock_sticker'] = 'no'
     save_data(_config.moderation.data, data)
+     local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #Sticker posting has been #unlocked", ok_cb, false)
+     else
+      return reply_msg(msg.id,"قفل حذف استیکر از قبل فعال نبوده است", ok_cb, false)
   end
 end
 
@@ -575,11 +860,25 @@ local function lock_group_contacts(msg, data, target)
   end
   local group_contacts_lock = data[tostring(target)]['settings']['lock_contacts']
   if group_contacts_lock == 'yes' then
+    local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #Contact posting is #already locked", ok_cb, false)
   else
+  return reply_msg(msg.id,"قفل حذف شماره تلفن از قبل فعال بوده است", ok_cb, false)
+  end
+end
     data[tostring(target)]['settings']['lock_contacts'] = 'yes'
     save_data(_config.moderation.data, data)
+    local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #Contact posting has been #locked", ok_cb, false)
+    else
+      return reply_msg(msg.id,"قفل حذف شماره تلفن فعال شد", ok_cb, false)
+  end
+end
+     
   end
 end
 
@@ -589,11 +888,22 @@ local function unlock_group_contacts(msg, data, target)
   end
   local group_contacts_lock = data[tostring(target)]['settings']['lock_contacts']
   if group_contacts_lock == 'no' then
+     local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #Contact posting is #already unlocked", ok_cb, false)
   else
+    return reply_msg(msg.id,"قفل حذف شماره تلفن از قبل فعال نبوده است", ok_cb, false)
+  end
+end
     data[tostring(target)]['settings']['lock_contacts'] = 'no'
     save_data(_config.moderation.data, data)
+     local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #Contact posting has been #unlocked", ok_cb, false)
+    else
+     return reply_msg(msg.id,"قفل حذف شماره تلفن آزاد شد", ok_cb, false)
   end
 end
 
@@ -603,11 +913,22 @@ local function enable_strict_rules(msg, data, target)
   end
   local group_strict_lock = data[tostring(target)]['settings']['strict']
   if group_strict_lock == 'yes' then
+    local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #Settings are #already strictly enforced", ok_cb, false)
   else
+    return reply_msg(msg.id,"تنظیمات لاک ها به صورت ریمو تنظیم شد", ok_cb, false)
+  end
+end
     data[tostring(target)]['settings']['strict'] = 'yes'
     save_data(_config.moderation.data, data)
+    local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #Settings will be #strictly_enforced", ok_cb, false)
+    else
+    return reply_msg(msg.id,"تنظیمات لاک ها به صورت حذف پیام تنظیم شد", ok_cb, false)
   end
 end
 
@@ -617,10 +938,16 @@ local function disable_strict_rules(msg, data, target)
   end
   local group_strict_lock = data[tostring(target)]['settings']['strict']
   if group_strict_lock == 'no' then
+    local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #Settings are #not strictly enforced", ok_cb, false)
   else
     data[tostring(target)]['settings']['strict'] = 'no'
     save_data(_config.moderation.data, data)
+    local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
     return reply_msg(msg.id,"> #Settings will #not be strictly enforced", ok_cb, false)
   end
 end
@@ -634,7 +961,12 @@ local function set_rulesmod(msg, data, target)
   local data_cat = 'rules'
   data[tostring(target)][data_cat] = rules
   save_data(_config.moderation.data, data)
+   local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
   return reply_msg(msg.id,"*SuperGroup rules set", ok_cb, false)
+   else
+    return reply_msg(msg.id,"قوانین سوپرگروه ست شد", ok_cb, false)
 end
 
 --'Get supergroup rules' function
@@ -778,8 +1110,52 @@ end
 			data[tostring(target)]['settings']['lock_fwd'] = 'no'
 		end
 	end
+	if is_muted(tostring(target), 'Audio: yes') then
+	Audio = 'yes'
+	else
+	Audio = 'no'
+	end
+    if is_muted(tostring(target), 'Photo: yes') then
+	Photo = 'yes'
+	else
+	Photo = 'no'
+	end
+    if is_muted(tostring(target), 'Video: yes') then
+	Video = 'yes'
+	else
+	Video = 'no'
+	end
+    if is_muted(tostring(target), 'Gifs: yes') then
+	Gifs = 'yes'
+	else
+	Gifs = 'no'
+	end
+	if is_muted(tostring(target), 'Documents: yes') then
+	Documents = 'yes'
+	else
+	Documents = 'no'
+	end
+	if is_muted(tostring(target), 'Text: yes') then
+	Text = 'yes'
+	else
+	Text = 'no'
+	end
+	 if is_muted(tostring(target), 'All: yes') then
+	All = 'yes'
+	else
+	All = 'no'
+	end
+	local expiretime = redis:hget('expiretime', get_receiver(msg))
+    local expire = ''
+  if not expiretime then
+  expire = expire..'Not registered'
+  else
+   local now = tonumber(os.time())
+   expiree =  expire..math.floor((tonumber(expiretime) - tonumber(now)) / 86400) + 1
+   expire = expiree..' days later'
+ end
   local settings = data[tostring(target)]['settings']
-  local text = "SuperGroup settings:\n\nLock Links > "..settings.lock_link.."\nLock Webpage > "..settings.lock_webpage.."\nLock Tag > "..settings.lock_tag.."\nLock Emoji > "..settings.lock_emoji.."\nLock English > "..settings.lock_eng.."\nLock Badword > "..settings.lock_badw.."\nLock Flood > "..settings.flood.."\nFlood sensitivity > "..NUM_MSG_MAX.."\nLock Spam > "..settings.lock_spam.."\nLock Contacts > "..settings.lock_contacts.."\nLock Arabic/Persian > "..settings.lock_arabic.."\nLock Member > "..settings.lock_member.."\nLock RTL > "..settings.lock_rtl.."\nLock Forward > "..settings.lock_fwd.."\nLock TGservice > "..settings.lock_tgservice.."\nLock Sticker > "..settings.lock_sticker.."\nPublic > "..settings.public.."\nStrict Settings > "..settings.strict
+  local text = "Settings For [ "..msg.to.print_name.." ]:\n\nLock Links > "..settings.lock_link.."\nLock Webpage > "..settings.lock_webpage.."\nLock Tag > "..settings.lock_tag.."\nLock Emoji > "..settings.lock_emoji.."\nLock English > "..settings.lock_eng.."\nLock Badword > "..settings.lock_badw.."\nLock Flood > "..settings.flood.."\nFlood sensitivity > "..NUM_MSG_MAX.."\nLock Spam > "..settings.lock_spam.."\nLock Contacts > "..settings.lock_contacts.."\nLock Arabic/Persian > "..settings.lock_arabic.."\nLock Member > "..settings.lock_member.."\nLock RTL > "..settings.lock_rtl.."\nLock Forward > "..settings.lock_fwd.."\nLock TGservice > "..settings.lock_tgservice.."\nLock Sticker > "..settings.lock_sticker.."\nPublic > "..settings.public.."\nStrict Settings > "..settings.strict.."\n-------------------------------\nMute Audio > "..Audio.."\nMute Photo > "..Photo.."\nMute Video > "..Video.."\nMute Gifs > "..Gifs.."\nMute Documents > "..Documents.."\nMute Text > "..Text.."\nMute All > "..All.."\n---------------------------\nGroup Language > EN\nExpire date > "..expire
   local text = string.gsub(text,'yes','🔐')
   local text = string.gsub(text,'no','🔓')
   reply_msg(msg.id, text, ok_cb, false)
