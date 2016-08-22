@@ -189,57 +189,6 @@ end
 end
 
 --Begin supergroup locks
-local function lock_group_links(msg, data, target)
-  if not is_momod(msg) then
-    return
-  end
-  local group_link_lock = data[tostring(target)]['settings']['lock_link']
-  if group_link_lock == 'yes' then
-  local hash = 'group:'..msg.to.id
-  if group_lang then
-  local group_lang = redis:hget(hash,'lang')
-    return reply_msg(msg.id,"> #Link posting is #already locked", ok_cb, false)
-  else
-    return reply_msg(msg.id,"قفل ارسال لینک از قبل فعال است.", ok_cb, false)
-     end
-      end
-    data[tostring(target)]['settings']['lock_link'] = 'yes'
-    save_data(_config.moderation.data, data)
-    if group_spam_lock == 'yes' then
-  local hash = 'group:'..msg.to.id
-  if group_lang then
-  local group_lang = redis:hget(hash,'lang')
-    return reply_msg(msg.id,"> #Link posting has been #locked", ok_cb, false)
-    else
-     return reply_msg(msg.id,"> قفل ارسال لینک فعال شد", ok_cb, false)
-  end
-end
-
-local function unlock_group_links(msg, data, target)
-  if not is_momod(msg) then
-    return
-  end
-  local group_link_lock = data[tostring(target)]['settings']['lock_link']
-  if group_link_lock == 'no' then
-     local hash = 'group:'..msg.to.id
-  if group_lang then
-  local group_lang = redis:hget(hash,'lang')
-     return reply_msg(msg.id,"> #Link posting is #not locked", ok_cb, false)
-      else
-       return reply_msg(msg.id,"> قفل ارسال لینک فعال نبوده", ok_cb, false)
-     end
-     end
-    data[tostring(target)]['settings']['lock_link'] = 'no'
-    save_data(_config.moderation.data, data)
-    if group_spam_lock == 'yes' then
-  local hash = 'group:'..msg.to.id
-  if group_lang then
-  local group_lang = redis:hget(hash,'lang')
-    return reply_msg(msg.id,">#Links Has Been #Unlocked", ok_cb, false)
-    else
-     return reply_msg(msg.id,"قفل ارسال لینک آزاد شد", ok_cb, false)
-  end
-end
 
 local function lock_group_spam(msg, data, target)
   if not is_momod(msg) then
@@ -1160,7 +1109,7 @@ end
    expire = expiree..' days later'
  end
   local settings = data[tostring(target)]['settings']
-  local text = "Settings For [ "..msg.to.print_name.." ]:\n\nLock Links > "..settings.lock_link.."\nLock Webpage > "..settings.lock_webpage.."\nLock Tag > "..settings.lock_tag.."\nLock Emoji > "..settings.lock_emoji.."\nLock English > "..settings.lock_eng.."\nLock Badword > "..settings.lock_badw.."\nLock Flood > "..settings.flood.."\nFlood sensitivity > "..NUM_MSG_MAX.."\nLock Spam > "..settings.lock_spam.."\nLock Contacts > "..settings.lock_contacts.."\nLock Arabic/Persian > "..settings.lock_arabic.."\nLock Member > "..settings.lock_member.."\nLock RTL > "..settings.lock_rtl.."\nLock Forward > "..settings.lock_fwd.."\nLock TGservice > "..settings.lock_tgservice.."\nLock Sticker > "..settings.lock_sticker.."\nPublic > "..settings.public.."\nStrict Settings > "..settings.strict.."\n-------------------------------\nMute Audio > "..Audio.."\nMute Photo > "..Photo.."\nMute Video > "..Video.."\nMute Gifs > "..Gifs.."\nMute Documents > "..Documents.."\nMute Text > "..Text.."\nMute All > "..All.."\n---------------------------\nGroup Language > EN\nExpire date > "..expire
+  local text = "Settings For [ "..msg.to.print_name.." ]:\n\nLock Webpage > "..settings.lock_webpage.."\nLock Tag > "..settings.lock_tag.."\nLock Emoji > "..settings.lock_emoji.."\nLock English > "..settings.lock_eng.."\nLock Badword > "..settings.lock_badw.."\nLock Flood > "..settings.flood.."\nFlood sensitivity > "..NUM_MSG_MAX.."\nLock Spam > "..settings.lock_spam.."\nLock Contacts > "..settings.lock_contacts.."\nLock Arabic/Persian > "..settings.lock_arabic.."\nLock Member > "..settings.lock_member.."\nLock RTL > "..settings.lock_rtl.."\nLock Forward > "..settings.lock_fwd.."\nLock TGservice > "..settings.lock_tgservice.."\nLock Sticker > "..settings.lock_sticker.."\nPublic > "..settings.public.."\nStrict Settings > "..settings.strict.."\n-------------------------------\nMute Audio > "..Audio.."\nMute Photo > "..Photo.."\nMute Video > "..Video.."\nMute Gifs > "..Gifs.."\nMute Documents > "..Documents.."\nMute Text > "..Text.."\nMute All > "..All.."\n---------------------------\nGroup Language > EN\nExpire date > "..expire
   local text = string.gsub(text,'yes','🔐')
   local text = string.gsub(text,'no','🔓')
   reply_msg(msg.id, text, ok_cb, false)
@@ -2263,10 +2212,6 @@ local function run(msg, matches)
 	end
 		if matches[1]:lower() == 'lock' and is_momod(msg) then
 			local target = msg.to.id
-			if matches[2] == 'links' then
-				savelog(msg.to.id, name_log.." ["..msg.from.id.."] locked link posting ")
-				return lock_group_links(msg, data, target)
-			end
 			if matches[2] == 'spam' then
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] locked spam ")
 				return lock_group_spam(msg, data, target)
@@ -2353,10 +2298,6 @@ local function run(msg, matches)
 		end
 		if matches[1]:lower() == 'unlock' and is_momod(msg) then
 			local target = msg.to.id
-			if matches[2] == 'links' then
-				savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked link posting")
-				return unlock_group_links(msg, data, target)
-			end
 			if matches[2] == 'spam' then
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked spam")
 				return unlock_group_spam(msg, data, target)
