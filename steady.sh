@@ -57,7 +57,7 @@ cat << EOF
 EOF
 echo -e "\e[100mCLI  اتولانچ پیشرفته\e[00;37;40m" # Time between checking cpu calls of the cli process. Set the value high if your bo
 echo -e "\e[01;34mمحمد\e[00;37;40m" # Time between checking cpu calls of the cli process. Set the value high if your bo
-echo -e "\e[01;34mkiavaprotection\e[00;37;40m" # Time between checking cpu calls of the cli process. Set the value high if your bo
+echo -e "\e[01;34mMuteTeam\e[00;37;40m" # Time between checking cpu calls of the cli process. Set the value high if your bo
 echo ""
 
 sleep 1.2
@@ -214,7 +214,7 @@ cat << EOF
 EOF
 echo -e "\e[100mCLI  اتولانچ پیشرفته\e[00;37;40m"
 echo -e "\e[01;34mمحمد\e[00;37;40m"
-echo -e "\e[01;34mkiavaprotection\e[00;37;40m"
+echo -e "\e[01;34mMuteTeam\e[00;37;40m"
 echo ""
 
 sleep 1.2
