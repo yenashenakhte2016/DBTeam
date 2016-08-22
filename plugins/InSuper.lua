@@ -1,4 +1,4 @@
-﻿-Begin supergrpup.lua
+﻿
 --Check members #Add supergroup
 local function check_member_super(cb_extra, success, result)
   local receiver = cb_extra.receiver
@@ -1156,7 +1156,7 @@ end
    expire = expiree..' days later'
  end
   local settings = data[tostring(target)]['settings']
-  local text = "Settings For [ "..msg.to.print_name.." ]:\n\nLock Webpage > "..settings.lock_webpage.."\nLock Tag > "..settings.lock_tag.."\nLock Emoji > "..settings.lock_emoji.."\nLock English > "..settings.lock_eng.."\nLock Badword > "..settings.lock_badw.."\nLock Flood > "..settings.flood.."\nFlood sensitivity > "..NUM_MSG_MAX.."\nLock Spam > "..settings.lock_spam.."\nLock Contacts > "..settings.lock_contacts.."\nLock Arabic/Persian > "..settings.lock_arabic.."\nLock Member > "..settings.lock_member.."\nLock RTL > "..settings.lock_rtl.."\nLock Forward > "..settings.lock_fwd.."\nLock TGservice > "..settings.lock_tgservice.."\nLock Sticker > "..settings.lock_sticker.."\nPublic > "..settings.public.."\nStrict Settings > "..settings.strict.."\n-------------------------------\nMute Audio > "..Audio.."\nMute Photo > "..Photo.."\nMute Video > "..Video.."\nMute Gifs > "..Gifs.."\nMute Documents > "..Documents.."\nMute Text > "..Text.."\nMute All > "..All.."\n---------------------------\nGroup Language > EN\nExpire date > "..expire
+  local text = "Settings For [ "..msg.to.print_name.." ]:\n\n\nLock links > "settings.lock_link.."\nLock Webpage > "..settings.lock_webpage.."\nLock Tag > "..settings.lock_tag.."\nLock Emoji > "..settings.lock_emoji.."\nLock English > "..settings.lock_eng.."\nLock Badword > "..settings.lock_badw.."\nLock Flood > "..settings.flood.."\nFlood sensitivity > "..NUM_MSG_MAX.."\nLock Spam > "..settings.lock_spam.."\nLock Contacts > "..settings.lock_contacts.."\nLock Arabic/Persian > "..settings.lock_arabic.."\nLock Member > "..settings.lock_member.."\nLock RTL > "..settings.lock_rtl.."\nLock Forward > "..settings.lock_fwd.."\nLock TGservice > "..settings.lock_tgservice.."\nLock Sticker > "..settings.lock_sticker.."\nPublic > "..settings.public.."\nStrict Settings > "..settings.strict.."\n-------------------------------\nMute Audio > "..Audio.."\nMute Photo > "..Photo.."\nMute Video > "..Video.."\nMute Gifs > "..Gifs.."\nMute Documents > "..Documents.."\nMute Text > "..Text.."\nMute All > "..All.."\n---------------------------\nGroup Language > EN\nExpire date > "..expire
   local text = string.gsub(text,'yes','🔐')
   local text = string.gsub(text,'no','🔓')
   reply_msg(msg.id, text, ok_cb, false)
@@ -2275,6 +2275,10 @@ local function run(msg, matches)
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] locked Tag ")
 				return lock_group_tag(msg, data, target)
 			end
+           if matches[2] == 'links' then
+				savelog(msg.to.id, name_log.." ["..msg.from.id.."] locked links ")
+				return lock_group_links(msg, data, target)
+			end
 			if matches[2] == 'webpage' then
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] locked WebLink ")
 				return lock_group_webpage(msg, data, target)
@@ -2368,6 +2372,10 @@ local function run(msg, matches)
 			if matches[2] == 'emoji' then
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked Emoji")
 				return unlock_group_emoji(msg, data, target)
+			end 
+            if matches[2] == 'links' then
+				savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked Links")
+				return unlock_group_links(msg, data, target)
 			end
 			if matches[2] == 'english' then
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked English")
