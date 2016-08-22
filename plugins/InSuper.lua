@@ -1,5 +1,4 @@
-﻿
---Begin supergrpup.lua
+﻿-Begin supergrpup.lua
 --Check members #Add supergroup
 local function check_member_super(cb_extra, success, result)
   local receiver = cb_extra.receiver
@@ -189,6 +188,54 @@ end
 end
 
 --Begin supergroup locks
+ 
+    local function lock_group_links(msg, data, target)
+  if not is_momod(msg) then
+    return
+  end
+  local group_link_lock = data[tostring(target)]['settings']['lock_link']
+  if group_link_lock == 'yes' then
+    local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
+    return reply_msg(msg.id,"> #Link posting is #already locked", ok_cb, false)
+  else
+     return reply_msg(msg.id,"قفل ارسال لینک از قبل فعال بوده است", ok_cb, false)
+     end
+        end
+    data[tostring(target)]['settings']['lock_link'] = 'yes'
+    save_data(_config.moderation.data, data)
+     local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
+    return reply_msg(msg.id,"> #Link posting has been #locked", ok_cb, false)
+    else
+     return reply_msg(msg.id,"قفل ارسال لینک فعال شد", ok_cb, false)
+  end
+end
+
+local function unlock_group_links(msg, data, target)
+  if not is_momod(msg) then
+    return
+  end
+  local group_link_lock = data[tostring(target)]['settings']['lock_link']
+  if group_link_lock == 'no' then
+    local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
+    return reply_msg(msg.id,"> #Link posting is #not locked", ok_cb, false)
+  else
+     return reply_msg(msg.id,"قفل ارسال لینک از قبل فعال نبوده است", ok_cb, false)
+    data[tostring(target)]['settings']['lock_link'] = 'no'
+    save_data(_config.moderation.data, data)
+    local hash = 'group:'..msg.to.id
+  if group_lang then
+  local group_lang = redis:hget(hash,'lang')
+    return reply_msg(msg.id,"> #Link posting has been #unlocked", ok_cb, false)
+    else
+     return reply_msg(msg.id,"قفل ارسا لینک آزاد شد", ok_cb, false)
+  end
+end
 
 local function lock_group_spam(msg, data, target)
   if not is_momod(msg) then
