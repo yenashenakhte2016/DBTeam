@@ -1994,7 +1994,7 @@ local function run(msg, matches)
 			local target = msg.to.id
 			     if matches[2] == 'all' then
       	local safemode ={
-        lock_group_link(msg, data, target),
+        lock_group_links(msg, data, target),
 		lock_group_tag(msg, data, target),
 		lock_group_spam(msg, data, target),
 		lock_group_flood(msg, data, target),
@@ -2016,6 +2016,7 @@ local function run(msg, matches)
       	return lock_group_all(msg, data, target), safemode
       end
         if matches[2] == 'etehad' then
+      	lock_group_links(msg, data, target),
 		lock_group_tag(msg, data, target),
 		unlock_group_spam(msg, data, target),
 		lock_group_flood(msg, data, target),
@@ -2136,7 +2137,7 @@ local function run(msg, matches)
 			local target = msg.to.id
 			     if matches[2] == 'all' then
       	local dsafemode ={
-        unlock_group_link(msg, data, target),
+        unlock_group_links(msg, data, target),
 		unlock_group_tag(msg, data, target),
 		unlock_group_spam(msg, data, target),
 		unlock_group_flood(msg, data, target),
@@ -2159,7 +2160,7 @@ local function run(msg, matches)
       end
       if matches[2] == 'etehad' then
       	local etehad ={
-        lock_group_link(msg, data, target),
+        lock_group_links(msg, data, target),
 		lock_group_tag(msg, data, target),
 		lock_group_spam(msg, data, target),
 		lock_group_flood(msg, data, target),
