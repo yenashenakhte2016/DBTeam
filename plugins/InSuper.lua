@@ -217,6 +217,62 @@ local function unlock_group_links(msg, data, target)
   end
 end
 
+     local function lock_group_all(msg, data, target)
+  if not is_momod(msg) then
+    return
+  end
+  local group_all_lock = data[tostring(target)]['settings']['all']
+  if group_all_lock == 'yes' then
+    return reply_msg(msg.id,"> #All Settings is #already locked", ok_cb, false)
+  else
+    data[tostring(target)]['settings']['lock_all'] = 'yes'
+    save_data(_config.moderation.data, data)
+    return reply_msg(msg.id,"> #All has been #locked", ok_cb, false)
+  end
+end
+
+local function unlock_group_all(msg, data, target)
+  if not is_momod(msg) then
+    return
+  end
+  local group_all_lock = data[tostring(target)]['settings']['all']
+  if group_all_lock == 'no' then
+    return reply_msg(msg.id,"> #All Settings is #not locked", ok_cb, false)
+  else
+    data[tostring(target)]['settings']['lock_all'] = 'no'
+    save_data(_config.moderation.data, data)
+    return reply_msg(msg.id,"> #All Settings has been #unlocked", ok_cb, false)
+  end
+end
+
+    local function lock_group_etehad(msg, data, target)
+  if not is_momod(msg) then
+    return
+  end
+  local group_etehad_lock = data[tostring(target)]['settings']['etehad']
+  if group_etehad_lock == 'yes' then
+    return reply_msg(msg.id,"> #Etehad Settings is #already locked", ok_cb, false)
+  else
+    data[tostring(target)]['settings']['etehad'] = 'yes'
+    save_data(_config.moderation.data, data)
+    return reply_msg(msg.id,"> #Etehad Settings has been #locked", ok_cb, false)
+  end
+end
+
+local function unlock_group_etehad(msg, data, target)
+  if not is_momod(msg) then
+    return
+  end
+  local group_etehad_lock = data[tostring(target)]['settings']['etehad']
+  if group_link_lock == 'no' then
+    return reply_msg(msg.id,"> #Etehad Settings is #not locked", ok_cb, false)
+  else
+    data[tostring(target)]['settings']['lock_etehad'] = 'no'
+    save_data(_config.moderation.data, data)
+    return reply_msg(msg.id,"> #Etehad Settings has been #unlocked", ok_cb, false)
+  end
+end
+
 local function lock_group_spam(msg, data, target)
   if not is_momod(msg) then
     return
@@ -718,6 +774,16 @@ function show_supergroup_settingsmod(msg, target)
 			data[tostring(target)]['settings']['lock_rtl'] = 'no'
 		end
 end
+   if data[tostring(target)]['settings'] then
+		if not data[tostring(target)]['settings']['all'] then
+			data[tostring(target)]['settings']['all'] = 'no'
+		end
+end
+     if data[tostring(target)]['settings'] then
+		if not data[tostring(target)]['settings']['etehad'] then
+			data[tostring(target)]['settings']['etehad'] = 'no'
+		end
+end
 	if data[tostring(target)]['settings'] then
 		if not data[tostring(target)]['settings']['lock_webpage'] then
 			data[tostring(target)]['settings']['lock_webpage'] = 'no'
@@ -823,7 +889,7 @@ end
    expire = expiree..' days later'
  end
   local settings = data[tostring(target)]['settings']
-  local text = "Settings For [ "..msg.to.print_name.." ]:\n\nLock Links > "..settings.lock_link.."\nLock Webpage > "..settings.lock_webpage.."\nLock Tag > "..settings.lock_tag.."\nLock Emoji > "..settings.lock_emoji.."\nLock English > "..settings.lock_eng.."\nLock Badword > "..settings.lock_badw.."\nLock Flood > "..settings.flood.."\nFlood sensitivity > "..NUM_MSG_MAX.."\nFlood Time > 3\nLock Spam > "..settings.lock_spam.."\nLock Contacts > "..settings.lock_contacts.."\nLock Arabic/Persian > "..settings.lock_arabic.."\nLock Member > "..settings.lock_member.."\nLock RTL > "..settings.lock_rtl.."\nLock Forward > "..settings.lock_fwd.."\nLock TGservice > "..settings.lock_tgservice.."\nLock Sticker > "..settings.lock_sticker.."\nPublic > "..settings.public.."\nStrict Settings > "..settings.strict.."\n-------------------------------\nMute Audio > "..Audio.."\nMute Photo > "..Photo.."\nMute Video > "..Video.."\nMute Gifs > "..Gifs.."\nMute Documents > "..Documents.."\nMute Text > "..Text.."\nMute All > "..All.."\n---------------------------\nGroup Language > EN\nExpire date > "..expire
+  local text = "Settings For [ "..msg.to.print_name.." ]:\n\nLock Links > "..settings.lock_link.."\nLock Webpage > "..settings.lock_webpage.."\nLock Tag > "..settings.lock_tag.."\nLock Emoji > "..settings.lock_emoji.."\nLock English > "..settings.lock_eng.."\nLock Badword > "..settings.lock_badw.."\nLock Flood > "..settings.flood.."\nFlood sensitivity > "..NUM_MSG_MAX.."\nFlood Time > 3\nLock Spam > "..settings.lock_spam.."\nLock Contacts > "..settings.lock_contacts.."\nLock Arabic/Persian > "..settings.lock_arabic.."\nLock Member > "..settings.lock_member.."\nLock RTL > "..settings.lock_rtl.."\nLock Forward > "..settings.lock_fwd.."\nLock TGservice > "..settings.lock_tgservice.."\nLock Sticker > "..settings.lock_sticker.."\nPublic > "..settings.public.."\nStrict Settings > "..settings.strict.."\n-------------------------------\nSwitch SuperGroup:\nSwitch Lock all > "..settings.all.."\nSwitch Lock Etehad > "..settings.etehad.."\n-------------------------------\nMute Audio > "..Audio.."\nMute Photo > "..Photo.."\nMute Video > "..Video.."\nMute Gifs > "..Gifs.."\nMute Documents > "..Documents.."\nMute Text > "..Text.."\nMute All > "..All.."\n---------------------------\nGroup Language > EN\nExpire date > "..expire
   local text = string.gsub(text,'yes','🔐')
   local text = string.gsub(text,'no','🔓')
   reply_msg(msg.id, text, ok_cb, false)
@@ -1926,6 +1992,51 @@ local function run(msg, matches)
 	end
 		if matches[1]:lower() == 'lock' and is_momod(msg) then
 			local target = msg.to.id
+			     if matches[2] == 'all' then
+      	local safemode ={
+        lock_group_link(msg, data, target),
+		lock_group_tag(msg, data, target),
+		lock_group_spam(msg, data, target),
+		lock_group_flood(msg, data, target),
+		lock_group_arabic(msg, data, target),
+		lock_group_member(msg, data, target),
+		lock_group_rtl(msg, data, target),
+		lock_group_tgservice(msg, data, target),
+		lock_group_sticker(msg, data, target),
+		lock_group_contacts(msg, data, target),
+		lock_group_eng(msg, data, target),
+		lock_group_fwd(msg, data, target),
+		lock_group_emoji(msg, data, target),
+		lock_group_badw(msg, data, target),
+		lock_group_media(msg, data, target),
+		lock_group_leave(msg, data, target),
+		lock_group_bots(msg, data, target),
+		lock_group_webpage(msg, data, target),
+      	}
+      	return lock_group_all(msg, data, target), safemode
+      end
+        if matches[2] == 'etehad' then
+      	lock_group_link(msg, data, target),
+		lock_group_tag(msg, data, target),
+		unlock_group_spam(msg, data, target),
+		lock_group_flood(msg, data, target),
+		unlock_group_arabic(msg, data, target),
+		unlock_group_member(msg, data, target),
+		unlock_group_rtl(msg, data, target),
+		lock_group_tgservice(msg, data, target),
+		unlock_group_sticker(msg, data, target),
+		lock_group_contacts(msg, data, target),
+		unlock_group_eng(msg, data, target),
+		lock_group_fwd(msg, data, target),
+		unlock_group_emoji(msg, data, target),
+		lock_group_badw(msg, data, target),
+		unlock_group_media(msg, data, target),
+		lock_group_leave(msg, data, target),
+		lock_group_bots(msg, data, target),
+		lock_group_webpage(msg, data, target),
+      	}
+      	return lock_group_etehad(msg, data, target), etehad
+      end
 			if matches[2] == 'links' then
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] locked link posting ")
 				return lock_group_links(msg, data, target)
@@ -1941,6 +2052,14 @@ local function run(msg, matches)
 			if matches[2] == 'arabic' then
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] locked arabic ")
 				return lock_group_arabic(msg, data, target)
+			end
+             if matches[2] == 'all' then
+				savelog(msg.to.id, name_log.." ["..msg.from.id.."] locked all ")
+				return lock_group_all(msg, data, target)
+			end
+			if matches[2] == 'etehad' then
+				savelog(msg.to.id, name_log.." ["..msg.from.id.."] locked etehad ")
+				return lock_group_etehad(msg, data, target)
 			end
 			if matches[2] == 'tag' then
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] locked Tag ")
@@ -2016,6 +2135,52 @@ local function run(msg, matches)
 		end
 		if matches[1]:lower() == 'unlock' and is_momod(msg) then
 			local target = msg.to.id
+			     if matches[2] == 'all' then
+      	local dsafemode ={
+        unlock_group_link(msg, data, target),
+		unlock_group_tag(msg, data, target),
+		unlock_group_spam(msg, data, target),
+		unlock_group_flood(msg, data, target),
+		unlock_group_arabic(msg, data, target),
+		unlock_group_member(msg, data, target),
+		unlock_group_rtl(msg, data, target),
+		unlock_group_tgservice(msg, data, target),
+		unlock_group_sticker(msg, data, target),
+		unlock_group_contacts(msg, data, target),
+		unlock_group_eng(msg, data, target),
+		unlock_group_fwd(msg, data, target),
+		unlock_group_emoji(msg, data, target),
+		unlock_group_badw(msg, data, target),
+		unlock_group_media(msg, data, target),
+		unlock_group_leave(msg, data, target),
+		unlock_group_bots(msg, data, target),
+		unlock_group_webpage(msg, data, target),
+      	}
+      	return unlock_group_all(msg, data, target), dsafemode
+      end
+      if matches[2] == 'etehad' then
+      	local etehad ={
+        lock_group_link(msg, data, target),
+		lock_group_tag(msg, data, target),
+		lock_group_spam(msg, data, target),
+		lock_group_flood(msg, data, target),
+		unlock_group_arabic(msg, data, target),
+		unlock_group_member(msg, data, target),
+		lock_group_rtl(msg, data, target),
+		lock_group_tgservice(msg, data, target),
+		unlock_group_sticker(msg, data, target),
+		lock_group_contacts(msg, data, target),
+		unlock_group_eng(msg, data, target),
+		lock_group_fwd(msg, data, target),
+		unlock_group_emoji(msg, data, target),
+		lock_group_badw(msg, data, target),
+		unlock_group_media(msg, data, target),
+		unlock_group_leave(msg, data, target),
+		lock_group_bots(msg, data, target),
+		lock_group_webpage(msg, data, target),
+      	}
+      	return unlock_group_etehad(msg, data, target), etehad
+      end
 			if matches[2] == 'links' then
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked link posting")
 				return unlock_group_links(msg, data, target)
@@ -2035,6 +2200,14 @@ local function run(msg, matches)
 			if matches[2] == 'tag' then
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked Tag")
 				return unlock_group_tag(msg, data, target)
+			end
+            if matches[2] == 'all' then
+				savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked all")
+				return unlock_group_all(msg, data, target)
+			end
+             if matches[2] == 'etehad' then
+				savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked etehad")
+				return unlock_group_etehad(msg, data, target)
 			end
 			if matches[2] == 'webpage' then
 				savelog(msg.to.id, name_log.." ["..msg.from.id.."] unlocked WebLink")
