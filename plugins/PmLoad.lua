@@ -35,15 +35,15 @@ if is_chat_msg(msg) or is_super_group(msg) then
 	else
 		lock_member = 'no'
 	end
+    if settings.lock_sticker then
+		lock_sticker = settings.lock_sticker
+	else
+		lock_sticker = 'no'
+	end
 	if settings.lock_spam then
 		lock_spam = settings.lock_spam
 	else
 		lock_spam = 'no'
-	end
-	if settings.lock_sticker then
-		lock_sticker = settings.lock_sticker
-	else
-		lock_sticker = 'no'
 	end
 	if settings.lock_webpage then
 		lock_webpage = settings.lock_webpage
@@ -79,6 +79,21 @@ if is_chat_msg(msg) or is_super_group(msg) then
 		lock_photo = settings.lock_photo
 	else
 		lock_photo = 'no'
+	end
+     if settings.lock_operator then
+		lock_operator = settings.lock_operator
+	else
+		lock_operator = 'no'
+	end
+     if settings.lock_chalesh then
+		lock_chalesh = settings.lock_chalesh
+	else
+		lock_chalesh = 'no'
+	end
+      if settings.lock_username then
+		lock_username = settings.lock_username
+	else
+		lock_username = 'no'
 	end
 	if settings.lock_gif then
 		lock_gif = settings.lock_gif
@@ -121,8 +136,8 @@ if is_chat_msg(msg) or is_super_group(msg) then
 					kick_user(msg.from.id, msg.to.id)
 				end
 			end
-			local is_link_msg = msg.text:match("[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Mm][Ee]") or msg.text:match("[Tt][Ll][Gg][Rr][Mm].[Mm][Ee]/")
-			local is_bot = msg.text:match("?[Ss][Tt][Aa][Rr][Tt]=")
+			local is_link_msg = msg.text:match("[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Mm][Ee]") or msg.text:match("[Tt][Ll][Gg][Rr][Mm].[Mm][Ee]/") or msg.text:match("[Hh][Tt][Tt][Pp][Ss]://")
+			local is_bot = msg.text: match("?[Ss][Tt][Aa][Rr][Tt]=")
 			if is_link_msg and lock_link == "yes" and not is_bot then
 				delete_msg(msg.id, ok_cb, false)
 				if strict == "yes" or to_chat then
@@ -144,15 +159,29 @@ if is_chat_msg(msg) or is_super_group(msg) then
 					kick_user(msg.from.id, msg.to.id)
 				end
 			end
-			local is_badw_msg = msg.text:match("[Kk][Ii][Rr]") or msg.text:match("[Kk][Oo][Ss]") or msg.text:match("[Kk][Oo][Ss][Dd][Ee]") or msg.text:match("[Kk][Oo][Oo][Nn][Ii]") or msg.text:match("[Jj][Ee][Nn][Dd][Ee]") or msg.text:match("[Jj][Ee][Nn][Dd][Ee][Hh]") or msg.text:match("[Kk][Oo][Oo][Nn]") or msg.text:match("کیر") or msg.text:match("کسکش") or msg.text:match("کونی") or msg.text:match("جنده") or msg.text:match("حشری") or msg.text:match("گاو")  or msg.text:match("خر") or msg.text:match("کس") or msg.text:match("سیکتیر") or msg.text:match("سیک") or msg.text:match("خارکس")
+			local is_badw_msg = msg.text:match("[Kk][Ii][Rr]") or msg.text:match("[Kk][Oo][Ss]") or msg.text:match("[Kk][Oo][Ss][Dd][Ee]") or msg.text:match("[Kk][Oo][Oo][Nn][Ii]") or msg.text:match("[Jj][Ee][Nn][Dd][Ee]") or msg.text:match("[Jj][Ee][Nn][Dd][Ee][Hh]") or msg.text:match("[Kk][Oo][Oo][Nn]") or msg.text:match("کیر") or msg.text:match("کسکش") or msg.text:match("کونی") or msg.text:match("جنده") or msg.text:match("حشری") or msg.text:match("گاو")  or msg.text:match("خر") or msg.text:match("کس") or msg.text:match("سیکتیر") or msg.text:match("سیک") or msg.text:match("خارکس") or msg.text:match("ننه") or msg.text:match("میخار") or msg.text:match("کون") or msg.text:match("گاو") or msg.text:match("خر") or msg.text:match("گوسفند") or msg.text:match("گایید")
 			if is_badw_msg and lock_badw == "yes" then
 				delete_msg(msg.id, ok_cb, false)
 				if strict == "yes" or to_chat then
 					kick_user(msg.from.id, msg.to.id)
 				end
 			end
-			local is_tag_msg = msg.text:match("@")
+            local is_operator_msg = msg.text:match("شارژ") or msg.text:match("رایگان") or msg.text:match("ایرانسل") or msg.text:match("همراه اول") or msg.text:match("رایتل") or msg.text:match("بسته ایرانسل") or msg.text:match("شارژ ندارم") or msg.text:match("بسته همراه اول") or msg.text:match("شارژ بده") or msg.text:match("اینترنت") or msg.text:match("اینترنت ندارم") 
+			if is_operator_msg and lock_operator == "yes" then
+				delete_msg(msg.id, ok_cb, false)
+				if strict == "yes" or to_chat then
+					kick_user(msg.from.id, msg.to.id)
+				end
+			end
+			local is_tag_msg = msg.text:match("#")
 			if is_tag_msg and lock_tag == "yes" then
+				delete_msg(msg.id, ok_cb, false)
+				if strict == "yes" or to_chat then
+					kick_user(msg.from.id, msg.to.id)
+				end
+			end
+             local is_username_msg = msg.text:match("@")
+			if is_username_msg and lock_username == "yes" then
 				delete_msg(msg.id, ok_cb, false)
 				if strict == "yes" or to_chat then
 					kick_user(msg.from.id, msg.to.id)
@@ -224,14 +253,21 @@ if is_chat_msg(msg) or is_super_group(msg) then
 					kick_user(msg.from.id, msg.to.id)
 				end
 			end
-				local is_badw_title = msg.media.title:match("[Kk][Ii][Rr]") or msg.media.title:match("[Kk][Oo][Ss]") or msg.media.title:match("[Kk][Oo][Ss][Dd][Ee]") or msg.media.title:match("[Kk][Oo][Oo][Nn][Ii]") or msg.media.title:match("[Jj][Ee][Nn][Dd][Ee]") or msg.media.title:match("[Jj][Ee][Nn][Dd][Ee][Hh]") or msg.media.title:match("[Kk][Oo][Oo][Nn]") or msg.media.title:match("کیر") or msg.media.title:match("کسکش") or msg.media.title:match("کونی") or msg.media.title:match("جنده") or msg.media.title:match("حشری") or msg.media.title:match("گاو")  or msg.media.title:match("خر") or msg.media.title:match("کس") or msg.media.title:match("سیکتیر") or msg.media.title:match("سیک") or msg.media.title:match("خارکس")
+				local is_badw_title = msg.media.title:match("[Kk][Ii][Rr]") or msg.media.title:match("[Kk][Oo][Ss]") or msg.media.title:match("[Kk][Oo][Ss][Dd][Ee]") or msg.media.title:match("[Kk][Oo][Oo][Nn][Ii]") or msg.media.title:match("[Jj][Ee][Nn][Dd][Ee]") or msg.media.title:match("[Jj][Ee][Nn][Dd][Ee][Hh]") or msg.media.title:match("[Kk][Oo][Oo][Nn]") or msg.media.title:match("کیر") or msg.media.title:match("کسکش") or msg.media.title:match("کونی") or msg.media.title:match("جنده") or msg.media.title:match("حشری") or msg.media.title:match("گاو")  or msg.media.title:match("خر") or msg.media.title:match("کس") or msg.media.title:match("سیکتیر") or msg.media.title:match("سیک") or msg.media.title:match("خارکس") or msg.media.title:match("سیک") or msg.media.title:match("خارکس") or msg.media.title:match("ننه") or msg.media.title:match("میخار") or msg.media.title:match("کون") or msg.media.title:match("گاو") or msg.media.title:match("خر") or msg.media.title:match("گوسفند") or msg.media.title:match("گایید") 
 			if is_badw_title and lock_badw == "yes" then
 				delete_msg(msg.id, ok_cb, false)
 				if strict == "yes" or to_chat then
 					kick_user(msg.from.id, msg.to.id)
 				end
 			end
-				local is_tag_title = msg.media.title:match("@")
+             local is_operator_title = msg.media.title:match("شارژ") or msg.media.title:match("شارژ رایگان") or msg.media.title:match("بسته ندارم") or msg.media.title:match("اینترنت ندارم") or msg.media.title:match("شارژ ایرانسل") or msg.media.title:match("رایتل") or msg.media.title:match("همراه اول") or msg.media.title:match("ایرانسل") 
+			if is_operator_title and lock_operator == "yes" then
+				delete_msg(msg.id, ok_cb, false)
+				if strict == "yes" or to_chat then
+					kick_user(msg.from.id, msg.to.id)
+				end
+			end
+				local is_tag_title = msg.media.title:match("#")
 			if is_tag_title and lock_tag == "yes" then
 				delete_msg(msg.id, ok_cb, false)
 				if strict == "yes" or to_chat then
@@ -261,7 +297,7 @@ if is_chat_msg(msg) or is_super_group(msg) then
 			end
 		end
 			if msg.media.description then
-				local is_link_desc = msg.media.description:match("[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Mm][Ee]") or msg.media.description:match("[Tt][Ll][Gg][Rr][Mm].[Mm][Ee]/")
+				local is_link_desc = msg.media.description:match("[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Mm][Ee]") or msg.media.description:match("[Tt][Ll][Gg][Rr][Mm].[Mm][Ee]/") or msg.media.description:match("[Hh][Tt][Tt][Pp][Ss]://")
 				if is_link_desc and lock_link == "yes" then
 					delete_msg(msg.id, ok_cb, false)
 					if strict == "yes" or to_chat then
@@ -283,15 +319,29 @@ if is_chat_msg(msg) or is_super_group(msg) then
 					
 				end
 			end
-			local is_badw_desc = msg.media.description:match("[Kk][Ii][Rr]") or msg.media.description:match("[Kk][Oo][Ss]") or msg.media.description:match("[Kk][Oo][Ss][Dd][Ee]") or msg.media.description:match("[Kk][Oo][Oo][Nn][Ii]") or msg.media.description:match("[Jj][Ee][Nn][Dd][Ee]") or msg.media.description:match("[Jj][Ee][Nn][Dd][Ee][Hh]") or msg.media.description:match("[Kk][Oo][Oo][Nn]") or msg.media.description:match("کیر") or msg.media.description:match("کسکش") or msg.media.description:match("کونی") or msg.media.description:match("جنده") or msg.media.description:match("حشری") or msg.media.description:match("گاو")  or msg.media.description:match("خر") or msg.media.description:match("کس") or msg.media.description:match("سیکتیر") or msg.media.description:match("سیک") or msg.media.description:match("خارکس")
+			local is_badw_desc = msg.media.description:match("[Kk][Ii][Rr]") or msg.media.description:match("[Kk][Oo][Ss]") or msg.media.description:match("[Kk][Oo][Ss][Dd][Ee]") or msg.media.description:match("[Kk][Oo][Oo][Nn][Ii]") or msg.media.description:match("[Jj][Ee][Nn][Dd][Ee]") or msg.media.description:match("[Jj][Ee][Nn][Dd][Ee][Hh]") or msg.media.description:match("[Kk][Oo][Oo][Nn]") or msg.media.description:match("کیر") or msg.media.description:match("کسکش") or msg.media.description:match("کونی") or msg.media.description:match("جنده") or msg.media.description:match("حشری") or msg.media.description:match("گاو")  or msg.media.description:match("خر") or msg.media.description:match("کس") or msg.media.description:match("سیکتیر") or msg.media.description:match("سیک") or msg.media.description:match("خارکس") or msg.media.description:match("سیک") or msg.media.description:match("خارکس") or msg.media.description:match("ننه") or msg.media.description:match("میخار") or msg.media.description:match("کون") or msg.media.description:match("گاو") or msg.media.description:match("خر") or msg.media.description:match("گوسفند") or msg.media.description:match("گایید") 
 			if is_badw_desc and lock_badw == "yes" then
 				delete_msg(msg.id, ok_cb, false)
 				if strict == "yes" or to_chat then
 					kick_user(msg.from.id, msg.to.id)
 				end
 			end
-			local is_tag_desc = msg.media.description:match("@")
+            local is_operator_desc = msg.media.description:match("شارژ رایگان") or msg.media.description:match("شارژ") or msg.media.description:match("ایرانسل") or msg.media.description:match("همراه اول") or msg.media.description:match("رایتل") or msg.media.description:match("ایترنت") 
+			if is_operator_desc and lock_operator == "yes" then
+				delete_msg(msg.id, ok_cb, false)
+				if strict == "yes" or to_chat then
+					kick_user(msg.from.id, msg.to.id)
+				end
+			end
+			local is_tag_desc = msg.media.description:match("#")
 			if is_tag_desc and lock_tag == "yes" then
+				delete_msg(msg.id, ok_cb, false)
+				if strict == "yes" or to_chat then
+					kick_user(msg.from.id, msg.to.id)
+				end
+			end
+            local is_username_desc = msg.media.description:match("@")
+			if is_username_desc and lock_username == "yes" then
 				delete_msg(msg.id, ok_cb, false)
 				if strict == "yes" or to_chat then
 					kick_user(msg.from.id, msg.to.id)
@@ -320,7 +370,7 @@ if is_chat_msg(msg) or is_super_group(msg) then
 			end
 		end
 			if msg.media.caption then -- msg.media.caption checks
-				local is_link_caption = msg.media.caption:match("[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Mm][Ee]") or msg.media.caption:match("[Tt][Ll][Gg][Rr][Mm].[Mm][Ee]/")
+				local is_link_caption = msg.media.caption:match("[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Mm][Ee]") or msg.media.caption:match("[Tt][Ll][Gg][Rr][Mm].[Mm][Ee]/") or msg.media.caption:match("[Hh][Tt][Tt][Pp][Ss]://")
 				if is_link_caption and lock_link == "yes" then
 					delete_msg(msg.id, ok_cb, false)
 					if strict == "yes" or to_chat then
@@ -334,12 +384,6 @@ if is_chat_msg(msg) or is_super_group(msg) then
 							kick_user(msg.from.id, msg.to.id)
 						end
 					end
-				if lock_sticker == "yes" and msg.media.caption:match(".webp") then
-					delete_msg(msg.id, ok_cb, false)
-					if strict == "yes" or to_chat then
-						kick_user(msg.from.id, msg.to.id)
-					end
-				end
 				local is_webpage_caption = msg.media.caption:match("[Hh][Tt][Tt][Pp][Ss]://") or msg.media.caption:match("[Hh][Tt][Tt][Pp]://") or msg.media.caption:match(".[Ii][Rr]") or msg.media.caption:match(".[Cc][Oo][Mm]") or msg.media.caption:match(".[Oo][Rr][Gg]") or msg.media.caption:match(".[Ii][Nn][Ff][Oo]") or msg.media.caption:match("[Ww][Ww][Ww].") or msg.media.caption:match(".[Tt][Kk]")
 			if is_webpage_caption and lock_webpage == "yes" then
 				delete_msg(msg.id, ok_cb, false)
@@ -347,15 +391,29 @@ if is_chat_msg(msg) or is_super_group(msg) then
 					kick_user(msg.from.id, msg.to.id)
 				end
 			end
-			local is_badw_caption = msg.media.caption:match("[Kk][Ii][Rr]") or msg.media.caption:match("[Kk][Oo][Ss]") or msg.media.caption:match("[Kk][Oo][Ss][Dd][Ee]") or msg.media.caption:match("[Kk][Oo][Oo][Nn][Ii]") or msg.media.caption:match("[Jj][Ee][Nn][Dd][Ee]") or msg.media.caption:match("[Jj][Ee][Nn][Dd][Ee][Hh]") or msg.media.caption:match("[Kk][Oo][Oo][Nn]") or msg.media.caption:match("کیر") or msg.media.caption:match("کسکش") or msg.media.caption:match("کونی") or msg.media.caption:match("جنده") or msg.media.caption:match("حشری") or msg.media.caption:match("گاو")  or msg.media.caption:match("خر") or msg.media.caption:match("کس") or msg.media.caption:match("سیکتیر") or msg.media.caption:match("سیک") or msg.media.caption:match("خارکس")
+			local is_badw_caption = msg.media.caption:match("[Kk][Ii][Rr]") or msg.media.caption:match("[Kk][Oo][Ss]") or msg.media.caption:match("[Kk][Oo][Ss][Dd][Ee]") or msg.media.caption:match("[Kk][Oo][Oo][Nn][Ii]") or msg.media.caption:match("[Jj][Ee][Nn][Dd][Ee]") or msg.media.caption:match("[Jj][Ee][Nn][Dd][Ee][Hh]") or msg.media.caption:match("[Kk][Oo][Oo][Nn]") or msg.media.caption:match("کیر") or msg.media.caption:match("کسکش") or msg.media.caption:match("کونی") or msg.media.caption:match("جنده") or msg.media.caption:match("حشری") or msg.media.caption:match("گاو")  or msg.media.caption:match("خر") or msg.media.caption:match("کس") or msg.media.caption:match("سیکتیر") or msg.media.caption:match("سیک") or msg.media.caption:match("خارکس") or msg.media.caption:match("سیک") or msg.media.caption:match("خارکس") or msg.media.caption:match("ننه") or msg.media.caption:match("میخار") or msg.media.caption:match("کون") or msg.media.caption:match("گاو") or msg.media.caption:match("خر") or msg.media.caption:match("گوسفند") or msg.media.caption:match("گایید") 
 			if is_badw_caption and lock_badw == "yes" then
 				delete_msg(msg.id, ok_cb, false)
 				if strict == "yes" or to_chat then
 					kick_user(msg.from.id, msg.to.id)
 				end
 			end
-			local is_tag_caption = msg.media.caption:match("@")
+            local is_operator_caption = msg.media.caption:match("شارژ") or msg.media.caption:match("شارژ رایگان") or msg.media.caption:match("همراه اول") or msg.media.caption:match("ایرانسل") or msg.media.caption:match("رایتل") or msg.media.caption:match("اینترنت") or msg.media.caption:match("رایگان")
+			if is_operator_caption and lock_operator == "yes" then
+				delete_msg(msg.id, ok_cb, false)
+				if strict == "yes" or to_chat then
+					kick_user(msg.from.id, msg.to.id)
+				end
+			end
+			local is_tag_caption = msg.media.caption:match("#")
 			if is_tag_caption and lock_tag == "yes" then
+				delete_msg(msg.id, ok_cb, false)
+				if strict == "yes" or to_chat then
+					kick_user(msg.from.id, msg.to.id)
+				end
+			end
+             local is_username_caption = msg.media.caption:match("#")
+			if is_username_caption and lock_username == "yes" then
 				delete_msg(msg.id, ok_cb, false)
 				if strict == "yes" or to_chat then
 					kick_user(msg.from.id, msg.to.id)
@@ -425,7 +483,7 @@ if is_chat_msg(msg) or is_super_group(msg) then
 		end
 		if msg.fwd_from then
 			if msg.fwd_from.title then
-				local is_link_title = msg.fwd_from.title:match("[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Mm][Ee]") or msg.fwd_from.title:match("[Tt][Ll][Gg][Rr][Mm].[Mm][Ee]/")
+				local is_link_title = msg.fwd_from.title:match("[Tt][Ee][Ll][Ee][Gg][Rr][Aa][Mm].[Mm][Ee]") or msg.fwd_from.title:match("[Tt][Ll][Gg][Rr][Mm].[Mm][Ee]/") or msg.fwd_from.title:match("[Hh][Tt][Tt][Pp][Ss]://")
 				if is_link_title and lock_link == "yes" then
 					delete_msg(msg.id, ok_cb, false)
 					if strict == "yes" or to_chat then
@@ -446,15 +504,30 @@ if is_chat_msg(msg) or is_super_group(msg) then
 					kick_user(msg.from.id, msg.to.id)
 				end
 			end
-			local is_badw_title = msg.fwd_from.title:match("[Kk][Ii][Rr]") or msg.fwd_from.title:match("[Kk][Oo][Ss]") or msg.fwd_from.title:match("[Kk][Oo][Ss][Dd][Ee]") or msg.fwd_from.title:match("[Kk][Oo][Oo][Nn][Ii]") or msg.fwd_from.title:match("[Jj][Ee][Nn][Dd][Ee]") or msg.fwd_from.title:match("[Jj][Ee][Nn][Dd][Ee][Hh]") or msg.fwd_from.title:match("[Kk][Oo][Oo][Nn]") or msg.fwd_from.title:match("کیر") or msg.fwd_from.title:match("کسکش") or msg.fwd_from.title:match("کونی") or msg.fwd_from.title:match("جنده") or msg.fwd_from.title:match("حشری") or msg.fwd_from.title:match("گاو")  or msg.fwd_from.title:match("خر") or msg.fwd_from.title:match("کس") or msg.fwd_from.title:match("سیکتیر") or msg.fwd_from.title:match("سیک") or msg.fwd_from.title:match("خارکس")
+			local is_badw_title = msg.fwd_from.title:match("[Kk][Ii][Rr]") or msg.fwd_from.title:match("[Kk][Oo][Ss]") or msg.fwd_from.title:match("[Kk][Oo][Ss][Dd][Ee]") or msg.fwd_from.title:match("[Kk][Oo][Oo][Nn][Ii]") or msg.fwd_from.title:match("[Jj][Ee][Nn][Dd][Ee]") or msg.fwd_from.title:match("[Jj][Ee][Nn][Dd][Ee][Hh]") or msg.fwd_from.title:match("[Kk][Oo][Oo][Nn]") or msg.fwd_from.title:match("کیر") or msg.fwd_from.title:match("کسکش") or msg.fwd_from.title:match("کونی") or msg.fwd_from.title:match("جنده") or msg.fwd_from.title:match("حشری") or msg.fwd_from.title:match("گاو")  or msg.fwd_from.title:match("خر") or msg.fwd_from.title:match("کس") or msg.fwd_from.title:match("سیکتیر") or msg.fwd_from.title:match("سیک") or msg.fwd_from.title:match("خارکس") or msg.fwd_from.title:match("ننه") or msg.fwd_from.title:match("میخار") or msg.fwd_from.title:match("کون") or msg.fwd_from.title:match("گاو") or msg.fwd_from.title:match("خر") or msg.fwd_from.title.match("گوسفند") or msg.fwd_from.title.match("گایید") 
 			if is_badw_title and lock_badw == "yes" then
 				delete_msg(msg.id, ok_cb, false)
 				if strict == "yes" or to_chat then
 					kick_user(msg.from.id, msg.to.id)
 				end
 			end
-				local is_tag_title = msg.fwd_from.title:match("@")
+               local is_operator_title = msg.fwd_from.title:match("شارژ") or msg.fwd_from.title:match("ایرانسل") or msg.fwd_from.title:match("همراه اول") or msg.fwd_from.title:match("رایتل") or msg.fwd_from.title:match("بسته") or msg.fwd_from.title:match("اینترنت") or msg.fwd_from.title:match("رایگان") 
+			if is_operator_title and lock_operator == "yes" then
+				delete_msg(msg.id, ok_cb, false)
+				if strict == "yes" or to_chat then
+					kick_user(msg.from.id, msg.to.id)
+				end
+			end
+				local is_tag_title = msg.fwd_from.title:match("#")
 			if is_tag_title and lock_tag == "yes" then
+				delete_msg(msg.id, ok_cb, false)
+				if strict == "yes" or to_chat then
+					kick_user(msg.from.id, msg.to.id)
+				end
+			end
+             local is_username_title =
+ msg.fwd_from.title:match("@")
+			if is_username_title and lock_username == "yes" then
 				delete_msg(msg.id, ok_cb, false)
 				if strict == "yes" or to_chat then
 					kick_user(msg.from.id, msg.to.id)
